@@ -33,6 +33,7 @@
 		CA7CC4F82BF23C4F005F7ABF /* API_URLs.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7CC4F72BF23C4F005F7ABF /* API_URLs.swift */; };
 		CA7CC4FA2BF23C66005F7ABF /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7CC4F92BF23C66005F7ABF /* ApiService.swift */; };
 		CA7CC4FC2BF23C78005F7ABF /* SportsApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7CC4FB2BF23C78005F7ABF /* SportsApi.swift */; };
+		CA7CC4FE2BF23CDC005F7ABF /* EventsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7CC4FD2BF23CDC005F7ABF /* EventsResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -79,6 +80,7 @@
 		CA7CC4F72BF23C4F005F7ABF /* API_URLs.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = API_URLs.swift; path = SportsEvents/Modules/LeagueDetails/viewModel/API_URLs.swift; sourceTree = SOURCE_ROOT; };
 		CA7CC4F92BF23C66005F7ABF /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ApiService.swift; path = SportsEvents/Modules/LeagueDetails/viewModel/ApiService.swift; sourceTree = SOURCE_ROOT; };
 		CA7CC4FB2BF23C78005F7ABF /* SportsApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SportsApi.swift; path = SportsEvents/Modules/LeagueDetails/viewModel/SportsApi.swift; sourceTree = SOURCE_ROOT; };
+		CA7CC4FD2BF23CDC005F7ABF /* EventsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -131,6 +133,7 @@
 			isa = PBXGroup;
 			children = (
 				C605E8EE2BF2338D0096ABB7 /* Sport.swift */,
+				CA7CC4FD2BF23CDC005F7ABF /* EventsResponse.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -445,6 +448,7 @@
 				CA7CC4AA2BF226A4005F7ABF /* SportsViewController.swift in Sources */,
 				CA7CC4B02BF226A4005F7ABF /* SportsEvents.xcdatamodeld in Sources */,
 				CA7CC4F42BF23361005F7ABF /* LeagueDetailsViewModel.swift in Sources */,
+				CA7CC4FE2BF23CDC005F7ABF /* EventsResponse.swift in Sources */,
 				CA7CC4F82BF23C4F005F7ABF /* API_URLs.swift in Sources */,
 				CA7CC4A62BF226A4005F7ABF /* AppDelegate.swift in Sources */,
 				C605E90A2BF238700096ABB7 /* SportsCollectionViewCell.swift in Sources */,

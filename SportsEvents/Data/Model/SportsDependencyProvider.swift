@@ -6,3 +6,13 @@
 //
 
 import Foundation
+
+
+class SportsDependencyProvider {
+    private static let apiService = SportsApi()
+ 
+
+    static func provideLeagueDetailsViewModel() -> LeagueDetailsViewModel {
+        return LeagueDetailsViewModel(apiService: self.apiService)
+    }
+}
