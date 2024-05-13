@@ -60,6 +60,10 @@ class LeagueDetailsViewController: UIViewController {
     
     func setUpCollectionView(){
         
+        /*let layout  = UICollectionViewFlowLayout()
+        layout.itemSize = CGSize(width: 120, height: 60)
+        collectionView.collectionViewLayout = layout*/
+        
         collectionView.register(UpComingEventsCollectionViewCell.nib(), forCellWithReuseIdentifier: "UpComingEventsCollectionViewCell")
         
         collectionView.delegate = self
@@ -108,8 +112,8 @@ extension LeagueDetailsViewController : UICollectionViewDelegate{
 extension LeagueDetailsViewController : UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        return leagueDetailsViewModel.getUpcomingEvents()?.reslut.count ?? 0
+       print("Count \(leagueDetailsViewModel.getUpcomingEvents()?.result.count)")
+        return leagueDetailsViewModel.getUpcomingEvents()?.result.count ?? 0
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -117,9 +121,9 @@ extension LeagueDetailsViewController : UICollectionViewDataSource{
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UpComingEventsCollectionViewCell", for: indexPath) as! UpComingEventsCollectionViewCell
         
         
-        let item = leagueDetailsViewModel.getUpcomingEvents()?.reslut[indexPath.row]
+        let item = leagueDetailsViewModel.getUpcomingEvents()?.result[indexPath.row]
         
-        cell.configure(homeTeam: item!.event_home_team, awayTeam: item!.event_away_team, homeLogo: item!.home_team_logo, awayLogo: item!.away_team_logo, eventDate: item!.event_date)
+        cell.configure(homeTeam: item?.event_home_team ?? "home", awayTeam: item!.event_away_team ?? "away", homeLogo: item!.home_team_logo ?? "", awayLogo: item!.away_team_logo ?? "", eventDate: item!.event_date ?? "")
         
         
         
@@ -127,3 +131,9 @@ extension LeagueDetailsViewController : UICollectionViewDataSource{
     }
     
 }
+/*extension LeagueDetailsViewController : UICollectionViewDelegateFlowLayout{
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 120, height: 60)
+    }
+}*/

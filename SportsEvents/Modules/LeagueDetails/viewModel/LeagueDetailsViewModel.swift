@@ -35,7 +35,7 @@ class LeagueDetailsViewModel {
         
         apiService.makeCallToApi(url: apiUrl) { (response: EventsResponse?, error) in
             if let error = error {
-                print("Error: \(error.localizedDescription)")
+                print(error)
             } else if let response = response {
                 self.upComingEventsResponse = response
                 completion()
@@ -58,7 +58,7 @@ class LeagueDetailsViewModel {
             
             apiService.makeCallToApi(url: apiUrl) { (response: EventsResponse?, error) in
                 if let error = error {
-                    print("Error: \(error.localizedDescription)")
+                    print(error)
                 } else if let response = response {
                     self.leatesReulst = response
                     completion()
@@ -72,6 +72,7 @@ class LeagueDetailsViewModel {
             apiService.makeCallToApi(url: apiUrl) { (response: TeamResponse?, error) in
                 if let error = error {
                     completion(nil, error)
+                    print(error)
                 } else if let response = response {
                     self.teamsResponse = response
                     completion(response, nil)
