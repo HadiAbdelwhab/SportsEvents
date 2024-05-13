@@ -34,6 +34,7 @@
 		CA7CC4FA2BF23C66005F7ABF /* ApiService.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7CC4F92BF23C66005F7ABF /* ApiService.swift */; };
 		CA7CC4FC2BF23C78005F7ABF /* SportsApi.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7CC4FB2BF23C78005F7ABF /* SportsApi.swift */; };
 		CA7CC4FE2BF23CDC005F7ABF /* EventsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7CC4FD2BF23CDC005F7ABF /* EventsResponse.swift */; };
+		CA7CC5022BF2469A005F7ABF /* TeamResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7CC5012BF2469A005F7ABF /* TeamResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -81,6 +82,7 @@
 		CA7CC4F92BF23C66005F7ABF /* ApiService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ApiService.swift; path = SportsEvents/Modules/LeagueDetails/viewModel/ApiService.swift; sourceTree = SOURCE_ROOT; };
 		CA7CC4FB2BF23C78005F7ABF /* SportsApi.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SportsApi.swift; path = SportsEvents/Modules/LeagueDetails/viewModel/SportsApi.swift; sourceTree = SOURCE_ROOT; };
 		CA7CC4FD2BF23CDC005F7ABF /* EventsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventsResponse.swift; sourceTree = "<group>"; };
+		CA7CC5012BF2469A005F7ABF /* TeamResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeamResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -134,6 +136,7 @@
 			children = (
 				C605E8EE2BF2338D0096ABB7 /* Sport.swift */,
 				CA7CC4FD2BF23CDC005F7ABF /* EventsResponse.swift */,
+				CA7CC5012BF2469A005F7ABF /* TeamResponse.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -442,6 +445,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA7CC5022BF2469A005F7ABF /* TeamResponse.swift in Sources */,
 				CA7CC4FC2BF23C78005F7ABF /* SportsApi.swift in Sources */,
 				C605E8FB2BF234A20096ABB7 /* LocalSportsDataSource.swift in Sources */,
 				C605E8EF2BF2338D0096ABB7 /* Sport.swift in Sources */,
