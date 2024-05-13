@@ -9,10 +9,15 @@ import UIKit
 
 class SportsCollectionViewCell: UICollectionViewCell {
 
-    
+    @IBOutlet weak var ivImage: UIImageView!
+    @IBOutlet weak var lName: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-
+    
+    func bind(sport: Sport) {
+        ivImage.image = UIImage(named: sport.thumb)
+        lName.text = sport.title
+    }
 }
