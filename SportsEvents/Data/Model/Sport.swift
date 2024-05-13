@@ -8,6 +8,7 @@
 import Foundation
 
 struct Sport : Codable {
+    
     let title : String
     let format : String
     let thumb : String
