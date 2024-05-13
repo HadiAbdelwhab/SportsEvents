@@ -17,6 +17,10 @@
 		CA7CC4C02BF226A7005F7ABF /* SportsEventsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7CC4BF2BF226A7005F7ABF /* SportsEventsTests.swift */; };
 		CA7CC4CA2BF226A7005F7ABF /* SportsEventsUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7CC4C92BF226A7005F7ABF /* SportsEventsUITests.swift */; };
 		CA7CC4CC2BF226A7005F7ABF /* SportsEventsUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7CC4CB2BF226A7005F7ABF /* SportsEventsUITestsLaunchTests.swift */; };
+		CA7CC4DA2BF22A1F005F7ABF /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = CA7CC4D92BF22A1F005F7ABF /* Alamofire */; };
+		CA7CC4DC2BF22A1F005F7ABF /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = CA7CC4DB2BF22A1F005F7ABF /* AlamofireDynamic */; };
+		CA7CC4DF2BF22A30005F7ABF /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = CA7CC4DE2BF22A30005F7ABF /* Reachability */; };
+		CA7CC4E22BF22A49005F7ABF /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = CA7CC4E12BF22A49005F7ABF /* Kingfisher */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +62,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CA7CC4E22BF22A49005F7ABF /* Kingfisher in Frameworks */,
+				CA7CC4DA2BF22A1F005F7ABF /* Alamofire in Frameworks */,
+				CA7CC4DF2BF22A30005F7ABF /* Reachability in Frameworks */,
+				CA7CC4DC2BF22A1F005F7ABF /* AlamofireDynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,6 +154,12 @@
 			dependencies = (
 			);
 			name = SportsEvents;
+			packageProductDependencies = (
+				CA7CC4D92BF22A1F005F7ABF /* Alamofire */,
+				CA7CC4DB2BF22A1F005F7ABF /* AlamofireDynamic */,
+				CA7CC4DE2BF22A30005F7ABF /* Reachability */,
+				CA7CC4E12BF22A49005F7ABF /* Kingfisher */,
+			);
 			productName = SportsEvents;
 			productReference = CA7CC4A22BF226A4005F7ABF /* SportsEvents.app */;
 			productType = "com.apple.product-type.application";
@@ -218,6 +232,11 @@
 				Base,
 			);
 			mainGroup = CA7CC4992BF226A4005F7ABF;
+			packageReferences = (
+				CA7CC4D82BF22A1F005F7ABF /* XCRemoteSwiftPackageReference "Alamofire" */,
+				CA7CC4DD2BF22A30005F7ABF /* XCRemoteSwiftPackageReference "Reachability" */,
+				CA7CC4E02BF22A49005F7ABF /* XCRemoteSwiftPackageReference "Kingfisher" */,
+			);
 			productRefGroup = CA7CC4A32BF226A4005F7ABF /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -605,6 +624,56 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		CA7CC4D82BF22A1F005F7ABF /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.9.1;
+			};
+		};
+		CA7CC4DD2BF22A30005F7ABF /* XCRemoteSwiftPackageReference "Reachability" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ashleymills/Reachability.swift";
+			requirement = {
+				branch = master;
+				kind = branch;
+			};
+		};
+		CA7CC4E02BF22A49005F7ABF /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/onevcat/Kingfisher";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 7.11.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		CA7CC4D92BF22A1F005F7ABF /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA7CC4D82BF22A1F005F7ABF /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
+		CA7CC4DB2BF22A1F005F7ABF /* AlamofireDynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA7CC4D82BF22A1F005F7ABF /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = AlamofireDynamic;
+		};
+		CA7CC4DE2BF22A30005F7ABF /* Reachability */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA7CC4DD2BF22A30005F7ABF /* XCRemoteSwiftPackageReference "Reachability" */;
+			productName = Reachability;
+		};
+		CA7CC4E12BF22A49005F7ABF /* Kingfisher */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = CA7CC4E02BF22A49005F7ABF /* XCRemoteSwiftPackageReference "Kingfisher" */;
+			productName = Kingfisher;
+		};
+/* End XCSwiftPackageProductDependency section */
 
 /* Begin XCVersionGroup section */
 		CA7CC4AE2BF226A4005F7ABF /* SportsEvents.xcdatamodeld */ = {
