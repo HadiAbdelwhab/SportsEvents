@@ -1,5 +1,5 @@
 //
-//  SportCollectionViewCell.swift
+//  SportsCollectionViewCell.swift
 //  SportsEvents
 //
 //  Created by JETSMobileLabMini14 on 13/05/2024.
@@ -7,10 +7,14 @@
 
 import UIKit
 
-class SportCollectionViewCell: UICollectionViewCell {
-    
+class SportsCollectionViewCell: UICollectionViewCell {
+
     @IBOutlet weak var ivImage: UIImageView!
     @IBOutlet weak var lName: UILabel!
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        // Initialization code
+    }
     
     func bind(sport: Sport) {
         ivImage.image = UIImage(named: sport.thumb)

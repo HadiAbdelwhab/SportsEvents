@@ -21,11 +21,12 @@ class SportsViewController: UIViewController, UICollectionViewDelegate, UICollec
         viewModel.onSportClicked = { [weak self] sport in
             self?.handleSportClicked(for: sport)
         }
-                
+        
         viewModel.onSportsFetched = { [weak self] in
             self?.updateCollectionView()
         }
-        
+        let nib = UINib(nibName: "SportsCollectionViewCell", bundle: nil)
+        cvSports.register(nib, forCellWithReuseIdentifier: "cSport")
     }
     
     func updateCollectionView() {
@@ -42,7 +43,7 @@ class SportsViewController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cSport", for: indexPath) as! SportCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cSport", for: indexPath) as! SportsCollectionViewCell
 
         cell.bind(sport: viewModel.dataSource.getSports()[indexPath.row])
         
