@@ -12,6 +12,8 @@ class LeagueDetailsViewModel {
     
     private var upComingEventsResponse: EventsResponse?
     private var leatesReulst:EventsResponse?
+    private var teamsResponse:TeamResponse?
+    
     private var apiService: ApiService = SportsApi.getApi()
     
     init( apiService: ApiService) {
@@ -43,7 +45,7 @@ class LeagueDetailsViewModel {
     
     
     
-    func getLatestResults(for leagueId: Int, completion: @escaping () -> Void) {
+    func fetchLatestResults(for leagueId: Int, completion: @escaping () -> Void) {
             let currentDate = Date()
             let oneYearAgoDate = Calendar.current.date(byAdding: .year, value: -1, to: currentDate)!
             
@@ -64,6 +66,18 @@ class LeagueDetailsViewModel {
             }
         }
     
+    func fetchAllTeams(for leagueId: Int, completion: @escaping (TeamResponse?, Error?) -> Void) {
+            let apiUrl = "https://apiv2.allsportsapi.com/football/?&met=Teams&leagueId=\(leagueId)&APIkey=d2538bc4458303020afacfc7511cb9f5808e36e454a61508dcb8a7ade6984775"
+            
+            apiService.makeCallToApi(url: apiUrl) { (response: TeamResponse?, error) in
+                if let error = error {
+                    completion(nil, error)
+                } else if let response = response {
+                    self.teamsResponse = response
+                    completion(response, nil)
+                }
+            }
+        }
     
     
     func getUpcomingEvents() -> EventsResponse? {
@@ -73,5 +87,9 @@ class LeagueDetailsViewModel {
     
     func getLeatesResult() -> EventsResponse? {
         return upComingEventsResponse
+    }
+    
+    func getAllTeams() -> TeamResponse? {
+        return teamsResponse
     }
 }
