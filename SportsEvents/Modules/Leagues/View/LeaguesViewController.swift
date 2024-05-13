@@ -83,12 +83,10 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
-    
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-////        if let leaguesVC = storyboard?.instantiateViewController(withIdentifier: "details") as? LeagueDetails_ViewController {
-////           
-////            navigationController?.pushViewController(leaguesVC, animated: true)
-////        }
-//    }
+       func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {     if let leaguesVC = storyboard?.instantiateViewController(withIdentifier: "details") as? LeagueDetailsViewController {
+        
+          navigationController?.pushViewController(leaguesVC, animated: true)
+      }
+}
 
 }
