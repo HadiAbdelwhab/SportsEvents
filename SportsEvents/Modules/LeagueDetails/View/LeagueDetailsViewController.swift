@@ -122,6 +122,7 @@ extension LeagueDetailsViewController : UICollectionViewDataSource{
         cell.configure(homeTeam: item!.event_home_team, awayTeam: item!.event_away_team, homeLogo: item!.home_team_logo, awayLogo: item!.away_team_logo, eventDate: item!.event_date)
         
         
+        
         return cell
     }
     
