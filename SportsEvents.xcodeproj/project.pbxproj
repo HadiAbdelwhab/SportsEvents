@@ -21,6 +21,8 @@
 		CA7CC4DC2BF22A1F005F7ABF /* AlamofireDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = CA7CC4DB2BF22A1F005F7ABF /* AlamofireDynamic */; };
 		CA7CC4DF2BF22A30005F7ABF /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = CA7CC4DE2BF22A30005F7ABF /* Reachability */; };
 		CA7CC4E22BF22A49005F7ABF /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = CA7CC4E12BF22A49005F7ABF /* Kingfisher */; };
+		CA7CC4F02BF2332C005F7ABF /* LeagueDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7CC4EF2BF2332C005F7ABF /* LeagueDetailsViewController.swift */; };
+		CA7CC4F42BF23361005F7ABF /* LeagueDetailsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA7CC4F32BF23361005F7ABF /* LeagueDetailsViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,6 +57,8 @@
 		CA7CC4C52BF226A7005F7ABF /* SportsEventsUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SportsEventsUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA7CC4C92BF226A7005F7ABF /* SportsEventsUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsEventsUITests.swift; sourceTree = "<group>"; };
 		CA7CC4CB2BF226A7005F7ABF /* SportsEventsUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SportsEventsUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		CA7CC4EF2BF2332C005F7ABF /* LeagueDetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeagueDetailsViewController.swift; sourceTree = "<group>"; };
+		CA7CC4F32BF23361005F7ABF /* LeagueDetailsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeagueDetailsViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +146,7 @@
 		CA7CC4E82BF22B79005F7ABF /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				CA7CC4EE2BF23306005F7ABF /* LeagueDetails */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -176,6 +181,31 @@
 				CA7CC4A72BF226A4005F7ABF /* SceneDelegate.swift */,
 			);
 			path = Delegate;
+			sourceTree = "<group>";
+		};
+		CA7CC4EE2BF23306005F7ABF /* LeagueDetails */ = {
+			isa = PBXGroup;
+			children = (
+				CA7CC4F22BF23349005F7ABF /* viewModel */,
+				CA7CC4F12BF23333005F7ABF /* View */,
+			);
+			path = LeagueDetails;
+			sourceTree = "<group>";
+		};
+		CA7CC4F12BF23333005F7ABF /* View */ = {
+			isa = PBXGroup;
+			children = (
+				CA7CC4EF2BF2332C005F7ABF /* LeagueDetailsViewController.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		CA7CC4F22BF23349005F7ABF /* viewModel */ = {
+			isa = PBXGroup;
+			children = (
+				CA7CC4F32BF23361005F7ABF /* LeagueDetailsViewModel.swift */,
+			);
+			path = viewModel;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -322,8 +352,10 @@
 			files = (
 				CA7CC4AA2BF226A4005F7ABF /* ViewController.swift in Sources */,
 				CA7CC4B02BF226A4005F7ABF /* SportsEvents.xcdatamodeld in Sources */,
+				CA7CC4F42BF23361005F7ABF /* LeagueDetailsViewModel.swift in Sources */,
 				CA7CC4A62BF226A4005F7ABF /* AppDelegate.swift in Sources */,
 				CA7CC4A82BF226A4005F7ABF /* SceneDelegate.swift in Sources */,
+				CA7CC4F02BF2332C005F7ABF /* LeagueDetailsViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
