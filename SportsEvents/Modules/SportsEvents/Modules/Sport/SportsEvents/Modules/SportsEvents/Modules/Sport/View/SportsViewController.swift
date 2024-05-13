@@ -7,7 +7,7 @@
 
 import UIKit
 
-class SportsViewController: UIViewController {
+class SportsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
 
     var viewModel = SportsViewModel()
     
@@ -15,6 +15,8 @@ class SportsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        viewModel.fetchSports()
         
         viewModel.onSportClicked = { [weak self] sport in
             self?.handleSportClicked(for: sport)
@@ -24,8 +26,6 @@ class SportsViewController: UIViewController {
             self?.updateCollectionView()
         }
         
-        let nib = UINib(nibName: "cSport", bundle: nil)
-        cvSports.register(nib, forCellWithReuseIdentifier: "cSport")
     }
     
     func updateCollectionView() {
@@ -37,13 +37,14 @@ class SportsViewController: UIViewController {
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        print(viewModel.dataSource.getSports().count)
         return viewModel.dataSource.getSports().count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cSport", for: indexPath) as! SportsCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cSport", for: indexPath) as! SportCollectionViewCell
 
-        cell.bindSport(sport: viewModel.dataSource.getSports()[indexPath.row])
+        cell.bind(sport: viewModel.dataSource.getSports()[indexPath.row])
         
         return cell
     }
@@ -52,5 +53,7 @@ class SportsViewController: UIViewController {
         let sport = viewModel.dataSource.getSports()[indexPath.row]
         viewModel.handleSportClicked(for: sport)
     }
+    
+    
 }
 
