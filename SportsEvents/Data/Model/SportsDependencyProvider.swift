@@ -10,9 +10,15 @@ import Foundation
 
 class SportsDependencyProvider {
     private static let apiService = SportsApi()
- 
+    private static let databaseManager = SportsLocalDataSource()
+    
+    static func provideLeaguesViewModel() -> LeaguesViewModel {
+        return LeaguesViewModel(apiService: self.apiService, databaseManager: databaseManager)
+    }
 
     static func provideLeagueDetailsViewModel() -> LeagueDetailsViewModel {
         return LeagueDetailsViewModel(apiService: self.apiService)
     }
+    
+    
 }

@@ -34,7 +34,12 @@ class SportsViewController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     func handleSportClicked(for sport: Sport) {
-        // Go To League Screen
+        if let leaguesVC = storyboard?.instantiateViewController(withIdentifier: "LeaguesViewController") as? LeaguesViewController {
+            print(sport.title)
+            leaguesVC.selectedSportTitle = sport.title
+            leaguesVC.isFavourite = false
+            navigationController?.pushViewController(leaguesVC, animated: true)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
