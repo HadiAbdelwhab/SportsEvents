@@ -1,0 +1,34 @@
+{
+  "originHash" : "d590068b9afff177bbf20605f3c8dcaa0ea349e5527c7090c9d4ae434b1a8c3b",
+  "originHash" : "3eff59145a891bd0c30899c60fdd0465a079260e5a70633ddbc371590096eea5",
+  "pins" : [
+    {
+      "identity" : "alamofire",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/Alamofire/Alamofire",
+      "state" : {
+        "revision" : "f455c2975872ccd2d9c81594c658af65716e9b9a",
+        "version" : "5.9.1"
+      }
+    },
+    {
+      "identity" : "kingfisher",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/onevcat/Kingfisher",
+      "state" : {
+        "revision" : "5b92f029fab2cce44386d28588098b5be0824ef5",
+        "version" : "7.11.0"
+      }
+    },
+    {
+      "identity" : "reachability.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ashleymills/Reachability.swift",
+      "state" : {
+        "branch" : "master",
+        "revision" : "57da4b1270cab7c2228919eabc0e4e1bf93e48ea"
+      }
+    }
+  ],
+  "version" : 3
+}
