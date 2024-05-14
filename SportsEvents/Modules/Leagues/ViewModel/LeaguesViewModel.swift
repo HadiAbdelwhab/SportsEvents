@@ -44,6 +44,12 @@ class LeaguesViewModel {
         }
     }
     
+    func removeLeague(_ leagueKey: Int) {
+        leagues = leagues?.filter { $0.leagueKey != leagueKey }
+        
+        databaseManager.removeFavoriteLeague(leagueKey: leagueKey)
+    }
+    
     func getLeagues() -> [League]? {
         return leagues
     }

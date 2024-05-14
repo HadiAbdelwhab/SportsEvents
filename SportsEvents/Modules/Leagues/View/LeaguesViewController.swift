@@ -116,4 +116,30 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return isFavourite
+    }
+
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        if isFavourite {
+            if editingStyle == .delete {
+                let alertController = UIAlertController(title: "Remove League", message: "Are you sure you want to remove this league?", preferredStyle: .alert)
+                
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                
+                let removeAction = UIAlertAction(title: "Remove", style: .destructive) { _ in
+                    if let league = self.leagueViewModel.getLeagues()?[indexPath.row] {
+                        self.leagueViewModel.removeLeague(league.leagueKey)
+                        tableView.deleteRows(at: [indexPath], with: .automatic)
+                    }
+                }
+                
+                alertController.addAction(cancelAction)
+                alertController.addAction(removeAction)
+                
+                present(alertController, animated: true, completion: nil)
+            }
+        }
+    }
 }

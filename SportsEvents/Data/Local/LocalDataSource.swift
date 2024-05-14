@@ -8,4 +8,5 @@
 import Foundation
 protocol LocalDataSource {
     func fetchFavoriteLeagues(completion: @escaping ([League]) -> Void)
+    func removeFavoriteLeague(leagueKey: Int)
 }

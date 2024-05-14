@@ -44,4 +44,21 @@ class SportsLocalDataSource: LocalDataSource {
             completion([])
         }
     }
+    
+    func removeFavoriteLeague(leagueKey: Int) {
+        let predicate = NSPredicate(format: "leagueKey == %d", leagueKey)
+        let fetchRequest: NSFetchRequest<FavoriteLeague> = FavoriteLeague.fetchRequest()
+        fetchRequest.predicate = predicate
+        
+        do {
+            let favoriteLeagues = try viewContext.fetch(fetchRequest)
+            for league in favoriteLeagues {
+                viewContext.delete(league)
+            }
+            try viewContext.save()
+        } catch {
+            print("Error removing favorite league: \(error)")
+        }
+    }
+    
 }
