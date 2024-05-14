@@ -31,7 +31,6 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     private func getLeagues() {
         startLoading()
-        print(isFavourite)
         if(isFavourite) {
             leagueViewModel.fetchFavoriteLeagues {
                 DispatchQueue.main.async {
@@ -90,5 +89,28 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
 ////            navigationController?.pushViewController(leaguesVC, animated: true)
 ////        }
 //    }
+    
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return isFavourite
+    }
 
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if isFavourite {
+            let alertController = UIAlertController(title: "Remove League", message: "Are you sure you want to remove this league?", preferredStyle: .alert)
+            
+            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+            
+            let removeAction = UIAlertAction(title: "Remove", style: .destructive) { _ in
+                if let league = self.leagueViewModel.getLeagues()?[indexPath.row] {
+                    self.leagueViewModel.removeLeague(league.leagueKey)
+                    tableView.deleteRows(at: [indexPath], with: .automatic)
+                }
+            }
+            
+            alertController.addAction(cancelAction)
+            alertController.addAction(removeAction)
+            
+            present(alertController, animated: true, completion: nil)
+        }
+    }
 }
