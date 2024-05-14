@@ -17,7 +17,7 @@ class SportsDependencyProvider {
     }
 
     static func provideLeagueDetailsViewModel() -> LeagueDetailsViewModel {
-        return LeagueDetailsViewModel(apiService: self.apiService)
+        return LeagueDetailsViewModel(apiService: self.apiService, databaseManager: databaseManager)
     }
     
     static func provideTeamViewModel() -> TeamViewModel {
