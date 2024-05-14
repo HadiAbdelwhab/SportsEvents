@@ -36,33 +36,30 @@ class LeagueDetailsViewController: UIViewController {
                 
                 setUpCollectionView()
 
-                print("UpcomingEvents \(leagueDetailsViewModel.getUpcomingEvents()?.success)")
             }
             
         }
         
         leagueDetailsViewModel.fetchLatestResults(for: "football", leagueId: 205){
         
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [self] in
                 
-                print("lateast result \(self.leagueDetailsViewModel.getUpcomingEvents()?.success)")
             }
         }
         
         leagueDetailsViewModel.fetchAllTeams(for: 205){_,_ in
             
             DispatchQueue.main.async {
-                print("teams result \(self.leagueDetailsViewModel.getAllTeams()?.success)")
             }
         }
         
     }
     
-    func drawTopSection() -> NSCollectionLayoutSection{
+    func drawUpcomingEventsSection() -> NSCollectionLayoutSection{
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.75), heightDimension: .absolute(200))
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(200))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
         group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32)
         let section = NSCollectionLayoutSection(group: group)
@@ -70,25 +67,52 @@ class LeagueDetailsViewController: UIViewController {
         section.contentInsets = NSDirectionalEdgeInsets(top: 100, leading: 16, bottom: 16, trailing: 0)
         
         section.visibleItemsInvalidationHandler = { (items, offset, environment) in
-        items.forEach { item in
-            let distanceFromCenter = abs((item.frame.midX - offset.x) - environment.container.contentSize.width / 2.0)
-            let minScale: CGFloat = 0.8
-            let maxScale: CGFloat = 1.0
-            let scale = max(maxScale - (distanceFromCenter / environment.container.contentSize.width), minScale)
-            item.transform = CGAffineTransform(scaleX: scale, y: scale)
-        }
+            items.forEach { item in
+                
+                    let distanceFromCenter = abs((item.frame.midX - offset.x) - environment.container.contentSize.width / 2.0)
+                    let minScale: CGFloat = 0.8
+                    let maxScale: CGFloat = 1.0
+                    let scale = max(maxScale - (distanceFromCenter / environment.container.contentSize.width), minScale)
+                    item.transform = CGAffineTransform(scaleX: scale, y: scale)
+                }
         }
         
         return section
     }
     
-    func setUpCollectionView(){
+    
+    func drawLatestResultsSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
-        /*let layout  = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 120, height: 60)
-        collectionView.collectionViewLayout = layout*/
-        let layout = UICollectionViewCompositionalLayout{ index , environment in
-            return self.drawTopSection()
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.75), heightDimension: .absolute(200))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .continuous
+        section.contentInsets = NSDirectionalEdgeInsets(top: 100, leading: 16, bottom: 16, trailing: 0)
+        
+        section.visibleItemsInvalidationHandler = { (items, offset, environment) in
+            items.forEach { item in
+                let distanceFromCenter = abs((item.frame.midX - offset.x) - environment.container.contentSize.width / 2.0)
+                let minScale: CGFloat = 0.8
+                let maxScale: CGFloat = 1.0
+                let scale = max(maxScale - (distanceFromCenter / environment.container.contentSize.width), minScale)
+                item.transform = CGAffineTransform(scaleX: scale, y: scale)
+            }
+        }
+        
+        return section
+    }
+    
+    func setUpCollectionView() {
+        let layout = UICollectionViewCompositionalLayout { index, environment in
+            if index == 0 {
+                return self.drawUpcomingEventsSection()
+            } else {
+                return self.drawLatestResultsSection() // Call drawLatestResultsSection for the second section
+            }
         }
         collectionView.setCollectionViewLayout(layout, animated: true)
         
@@ -126,29 +150,45 @@ class LeagueDetailsViewController: UIViewController {
 
 extension LeagueDetailsViewController : UICollectionViewDelegate, UICollectionViewDataSource{
     
+    
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        if section == 0 {
+            return leagueDetailsViewModel.getUpcomingEvents()?.result.count ?? 0
+        } else {
+            return leagueDetailsViewModel.getLatestResults()?.result.count ?? 0 // Assuming getLatestResults returns an array of latest results
+        }
+    }
+    
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Item selected")
     }
     
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-       print("Count \(leagueDetailsViewModel.getUpcomingEvents()?.result.count)")
-        return leagueDetailsViewModel.getUpcomingEvents()?.result.count ?? 0
-    }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! UpComingEventsCollectionViewCell
-        
-        
-        let item = leagueDetailsViewModel.getUpcomingEvents()?.result[indexPath.row]
-        
-        cell.configure(homeTeam: item?.event_home_team ?? "home", awayTeam: item!.event_away_team ?? "away", homeLogo: item!.home_team_logo ?? "", awayLogo: item!.away_team_logo ?? "", eventDate: item!.event_date ?? "")
-        
-        
-        
-        return cell
+        if indexPath.section == 0 {
+            // Configure cell for upcoming events section
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! UpComingEventsCollectionViewCell
+            
+            let item = leagueDetailsViewModel.getUpcomingEvents()?.result[indexPath.row]
+            cell.configure(homeTeam: item?.event_home_team ?? "home", awayTeam: item!.event_away_team ?? "away", homeLogo: item!.home_team_logo ?? "", awayLogo: item!.away_team_logo ?? "", eventDate: item?.event_date ?? "date")
+            
+            return cell
+        } else {
+            // Configure cell for latest results section
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell2", for: indexPath) as! LatestResultsCollectionViewCell
+            
+            let item = leagueDetailsViewModel.getLatestResults()?.result[indexPath.row]
+  
+            cell.configure(homeTeam: item?.event_home_team ?? "home", awayTeam: item!.event_away_team ?? "away", homeLogo: item!.home_team_logo ?? "", awayLogo: item!.away_team_logo ?? "", eventResult: item?.event_final_result ?? "0 - 0", eventDate: item?.event_date ?? "")
+            return cell
+        }
     }
-   
+
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 2
+    }
     
 }
 
