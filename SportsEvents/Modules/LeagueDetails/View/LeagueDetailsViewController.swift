@@ -36,12 +36,12 @@ class LeagueDetailsViewController: UIViewController {
                 
                 setUpCollectionView()
 
-                print("response  details \(leagueDetailsViewModel.getUpcomingEvents()?.success)")
+                print("UpcomingEvents \(leagueDetailsViewModel.getUpcomingEvents()?.success)")
             }
             
         }
         
-        leagueDetailsViewModel.fetchLatestResults(for: 205){
+        leagueDetailsViewModel.fetchLatestResults(for: "football", leagueId: 205){
         
             DispatchQueue.main.async {
                 
@@ -49,10 +49,10 @@ class LeagueDetailsViewController: UIViewController {
             }
         }
         
-        leagueDetailsViewModel.fetchAllTeams(for: 205){_,_ in 
+        leagueDetailsViewModel.fetchAllTeams(for: 205){_,_ in
             
             DispatchQueue.main.async {
-                print("lateast result \(self.leagueDetailsViewModel.getAllTeams()?.success)")
+                print("teams result \(self.leagueDetailsViewModel.getAllTeams()?.success)")
             }
         }
         
