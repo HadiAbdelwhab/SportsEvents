@@ -16,27 +16,18 @@ class UpComingEventsCollectionViewCell: UICollectionViewCell {
     @IBOutlet var awayTeamLable:UILabel!
     @IBOutlet var eventDateLable:UILabel!
     
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        // Initialization code
-    }
 
     
     public func configure(homeTeam:String, awayTeam:String, homeLogo:String, awayLogo:String, eventDate:String){
-        
-        homeTeamLable.text = homeTeam
-        awayTeamLable.text = awayTeam
-        
-        eventDateLable.text = eventDate
-        
-        homeTeamImageView.kf.setImage(with: URL(string: homeLogo))
-        awayTeamImageView.kf.setImage(with: URL(string: awayLogo))
+            
+            homeTeamLable.text = homeTeam
+            awayTeamLable.text = awayTeam
+            
+            eventDateLable.text = eventDate
+            
+            homeTeamImageView.kf.setImage(with: URL(string: homeLogo))
+            awayTeamImageView.kf.setImage(with: URL(string: awayLogo))
 
-        
-    }
-    
-    static func nib() -> UINib {
-        return UINib(nibName: "UpComingEventsCollectionViewCell", bundle: nil)
-    }
+            
+        }
 }

@@ -30,7 +30,7 @@ class LeagueDetailsViewController: UIViewController {
     func getLeagueDetails(){
        
         
-        leagueDetailsViewModel.fetchUpcomingEvents(for: "football", leagueId: 205){
+        leagueDetailsViewModel.fetchUpcomingEvents(for: "football", leagueId: 344){
             
             DispatchQueue.main.async{ [self] in
                 
@@ -58,13 +58,39 @@ class LeagueDetailsViewController: UIViewController {
         
     }
     
+    func drawTopSection() -> NSCollectionLayoutSection{
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.75), heightDimension: .absolute(200))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32)
+        let section = NSCollectionLayoutSection(group: group)
+        section.orthogonalScrollingBehavior = .continuous
+        section.contentInsets = NSDirectionalEdgeInsets(top: 100, leading: 16, bottom: 16, trailing: 0)
+        
+        section.visibleItemsInvalidationHandler = { (items, offset, environment) in
+        items.forEach { item in
+            let distanceFromCenter = abs((item.frame.midX - offset.x) - environment.container.contentSize.width / 2.0)
+            let minScale: CGFloat = 0.8
+            let maxScale: CGFloat = 1.0
+            let scale = max(maxScale - (distanceFromCenter / environment.container.contentSize.width), minScale)
+            item.transform = CGAffineTransform(scaleX: scale, y: scale)
+        }
+        }
+        
+        return section
+    }
+    
     func setUpCollectionView(){
         
         /*let layout  = UICollectionViewFlowLayout()
         layout.itemSize = CGSize(width: 120, height: 60)
         collectionView.collectionViewLayout = layout*/
-        
-        collectionView.register(UpComingEventsCollectionViewCell.nib(), forCellWithReuseIdentifier: "UpComingEventsCollectionViewCell")
+        let layout = UICollectionViewCompositionalLayout{ index , environment in
+            return self.drawTopSection()
+        }
+        collectionView.setCollectionViewLayout(layout, animated: true)
         
         collectionView.delegate = self
         collectionView.dataSource = self
@@ -98,18 +124,11 @@ class LeagueDetailsViewController: UIViewController {
 
     
 
-extension LeagueDetailsViewController : UICollectionViewDelegate{
+extension LeagueDetailsViewController : UICollectionViewDelegate, UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         print("Item selected")
     }
-    
-    
-    
-}
-
-
-extension LeagueDetailsViewController : UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
        print("Count \(leagueDetailsViewModel.getUpcomingEvents()?.result.count)")
@@ -118,7 +137,7 @@ extension LeagueDetailsViewController : UICollectionViewDataSource{
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "UpComingEventsCollectionViewCell", for: indexPath) as! UpComingEventsCollectionViewCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! UpComingEventsCollectionViewCell
         
         
         let item = leagueDetailsViewModel.getUpcomingEvents()?.result[indexPath.row]
@@ -129,8 +148,12 @@ extension LeagueDetailsViewController : UICollectionViewDataSource{
         
         return cell
     }
+   
     
 }
+
+
+
 /*extension LeagueDetailsViewController : UICollectionViewDelegateFlowLayout{
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
