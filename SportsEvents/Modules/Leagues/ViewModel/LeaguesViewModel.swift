@@ -5,7 +5,7 @@
 //  Created by JETSMobileLabMini14 on 13/05/2024.
 //
 
-import Foundation
+import Alamofire
 
 class LeaguesViewModel {
     private var leagues: [League]?
@@ -18,14 +18,19 @@ class LeaguesViewModel {
     }
     
     func fetchLeagues(for sportTitle: String, completion: @escaping () -> Void) {
-        let apiUrl = "\(ApiURLs.BASE_URL.rawValue)\(sportTitle.lowercased())/?met=Leagues&APIkey=\(ApiURLs.API_KEY.rawValue)"
-        print(apiUrl)
-        apiService.makeCallToApi(url: apiUrl) { (response: Leagues?, error) in
-            if let error = error {
-                print("Error: \(error.localizedDescription)")
-            } else if let response = response {
-                self.leagues = response.result
+        let apiUrl = "\(ApiURLs.BASE_URL.rawValue)\(sportTitle.lowercased())/"
+        let parameters: [String: Any] = [
+            "met": "Leagues",
+            "APIkey": ApiURLs.API_KEY.rawValue
+        ]
+        
+        AF.request(apiUrl, parameters: parameters).responseDecodable(of: Leagues.self) { response in
+            switch response.result {
+            case .success(let leaguesResponse):
+                self.leagues = leaguesResponse.result
                 completion()
+            case .failure(let error):
+                print("Error: \(error.localizedDescription)")
             }
         }
     }

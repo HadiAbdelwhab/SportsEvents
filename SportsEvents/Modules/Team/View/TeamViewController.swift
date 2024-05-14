@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Reachability
 
 class TeamViewController: UIViewController {
 
@@ -14,12 +15,15 @@ class TeamViewController: UIViewController {
     
     var teamsViewModel: TeamViewModel!
     var activityIndicator: UIActivityIndicatorView!
+    var reachability: Reachability!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         setupViewModel()
         setupActivityIndicator()
+        setupReachability()
+        
         getTeamDetails()
     }
     
@@ -27,7 +31,21 @@ class TeamViewController: UIViewController {
         teamsViewModel = SportsDependencyProvider.provideTeamViewModel()
     }
     
+    func setupReachability() {
+        do {
+            reachability = try Reachability()
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start reachability notifier")
+        }
+    }
+    
     private func getTeamDetails() {
+        guard reachability.connection != .unavailable else {
+            showAlert(title: "No Internet Connection", message: "Please check your internet connection and try again.")
+            return
+        }
+        
         startLoading()
         if let teamId = selectedTeamId {
             if let selectedSportTitle = selectedSportTitle {
@@ -55,5 +73,11 @@ class TeamViewController: UIViewController {
     func stopLoading() {
         activityIndicator.stopAnimating()
         view.isUserInteractionEnabled = true
+    }
+    
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
     }
 }

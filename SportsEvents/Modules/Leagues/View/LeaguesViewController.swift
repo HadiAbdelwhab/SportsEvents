@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Reachability
 
 class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var selectedSportTitle: String?
@@ -13,6 +14,7 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     var leagueViewModel : LeaguesViewModel!
     var activityIndicator: UIActivityIndicatorView!
+    var reachability: Reachability!
 
     @IBOutlet weak var tvLeagues: UITableView!
     
@@ -20,6 +22,8 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
         super.viewDidLoad()
         setupViewModel()
         setupActivityIndicator()
+        
+        setupReachability()
         getLeagues()
         let nib = UINib(nibName: "LeagueTableViewCell", bundle: nil)
         tvLeagues.register(nib, forCellReuseIdentifier: "cLeague")
@@ -29,9 +33,17 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
         leagueViewModel = SportsDependencyProvider.provideLeaguesViewModel()
     }
     
+    func setupReachability() {
+        do {
+            reachability = try Reachability()
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start reachability notifier")
+        }
+    }
+    
     private func getLeagues() {
         startLoading()
-        print(isFavourite)
         if(isFavourite) {
             leagueViewModel.fetchFavoriteLeagues {
                 DispatchQueue.main.async {
@@ -41,13 +53,18 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
                 }
             }
         } else {
-            if let sportTitle = selectedSportTitle {
-                leagueViewModel.fetchLeagues(for: sportTitle) {
-                    DispatchQueue.main.async {
-                        self.stopLoading()
-                        self.tvLeagues.reloadData()
+            if reachability.connection != .unavailable {
+                if let sportTitle = selectedSportTitle {
+                    leagueViewModel.fetchLeagues(for: sportTitle) {
+                        DispatchQueue.main.async {
+                            self.stopLoading()
+                            self.tvLeagues.reloadData()
+                        }
                     }
                 }
+            } else {
+                showAlert(title: "No Internet Connection", message: "Please check your internet connection and try again.")
+                stopLoading()
             }
         }
     }
@@ -83,10 +100,20 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
-       func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {     if let leaguesVC = storyboard?.instantiateViewController(withIdentifier: "details") as? LeagueDetailsViewController {
-        
-          navigationController?.pushViewController(leaguesVC, animated: true)
-      }
-}
-
+       
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if reachability.connection != .unavailable {
+            if let leaguesVC = storyboard?.instantiateViewController(withIdentifier: "details") as? LeagueDetailsViewController {
+                navigationController?.pushViewController(leaguesVC, animated: true)
+            }
+        } else {
+            showAlert(title: "No Internet Connection", message: "Please check your internet connection and try again.")
+        }
+    }
+    
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
 }
