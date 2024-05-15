@@ -40,17 +40,15 @@ class LeagueDetailsViewController: UIViewController {
             
         }
         
-        leagueDetailsViewModel.fetchLatestResults(for: "football", leagueId: 205){
-        
+        leagueDetailsViewModel.fetchLatestResults(for: "football", leagueId: 205) {
             DispatchQueue.main.async {
-                
                 self.setUpCollectionView()
             }
         }
         
-        leagueDetailsViewModel.fetchAllTeams(for: 205){_,_ in
-            
+        leagueDetailsViewModel.fetchAllTeams(for: 205){
             DispatchQueue.main.async {
+                print(self.leagueDetailsViewModel.getAllTeams())
             }
         }
         

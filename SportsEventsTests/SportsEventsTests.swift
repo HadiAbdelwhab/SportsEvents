@@ -6,6 +6,7 @@
 //
 
 import XCTest
+import Alamofire
 @testable import SportsEvents
 
 final class SportsEventsTests: XCTestCase {
@@ -18,19 +19,36 @@ final class SportsEventsTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
+    func testFetchDataFromJson() {
+            
+            let expectation = XCTestExpectation(description: "Fetch data from JSON")
+            
+            let apiService = RealAPIService()
+            
+            apiService.fetchEmployees { (employeeResponse, error) in
+            
+            XCTAssertNotNil(employeeResponse)
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+            XCTAssertNil(error)
+            
+            expectation.fulfill()
         }
+
+        wait(for: [expectation], timeout: 5.0)
     }
 
+    func testFetchLeaguesFromApi() {
+        let expectation = XCTestExpectation(description: "Fetch data from JSON")
+        
+        let sportsApi = SportsApi()
+        let apiUrl = "\(ApiURLs.BASE_URL.rawValue)football/"
+        let parameters: [String: Any] = [
+            "met": "Leagues",
+            "APIkey": ApiURLs.API_KEY.rawValue
+        ]
+        
+        sportsApi.makeCallToApi(url: <#T##String#>, completion: <#T##(Decodable?, (any Error)?) -> Void#>)
+        
+        wait(for: [expectation], timeout: 5.0)
+    }
 }
