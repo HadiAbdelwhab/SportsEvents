@@ -42,8 +42,9 @@ class LeagueDetailsViewController: UIViewController {
         
         leagueDetailsViewModel.fetchLatestResults(for: "football", leagueId: 205){
         
-            DispatchQueue.main.async { [self] in
+            DispatchQueue.main.async {
                 
+                self.setUpCollectionView()
             }
         }
         
@@ -111,7 +112,7 @@ class LeagueDetailsViewController: UIViewController {
             if index == 0 {
                 return self.drawUpcomingEventsSection()
             } else {
-                return self.drawLatestResultsSection() // Call drawLatestResultsSection for the second section
+                return self.drawLatestResultsSection()
             }
         }
         collectionView.setCollectionViewLayout(layout, animated: true)
@@ -182,6 +183,7 @@ extension LeagueDetailsViewController : UICollectionViewDelegate, UICollectionVi
             let item = leagueDetailsViewModel.getLatestResults()?.result[indexPath.row]
   
             cell.configure(homeTeam: item?.event_home_team ?? "home", awayTeam: item!.event_away_team ?? "away", homeLogo: item!.home_team_logo ?? "", awayLogo: item!.away_team_logo ?? "", eventResult: item?.event_final_result ?? "0 - 0", eventDate: item?.event_date ?? "")
+            
             return cell
         }
     }
@@ -191,12 +193,3 @@ extension LeagueDetailsViewController : UICollectionViewDelegate, UICollectionVi
     }
     
 }
-
-
-
-/*extension LeagueDetailsViewController : UICollectionViewDelegateFlowLayout{
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 120, height: 60)
-    }
-}*/
