@@ -29,34 +29,31 @@ class LeagueDetailsViewController: UIViewController {
     
     
     func getLeagueDetails(leagueId:Int){
-       
+        
         
         leagueDetailsViewModel.fetchUpcomingEvents(for: "football", leagueId: leagueId){
             self.startLoading()
             DispatchQueue.main.async{ [self] in
                 stopLoading()
                 setUpCollectionView()
-
+                
             }
             
         }
         
-        leagueDetailsViewModel.fetchLatestResults(for: "football", leagueId: leagueId){
         
+        leagueDetailsViewModel.fetchLatestResults(for: "football", leagueId: 205) {
             DispatchQueue.main.async {
-                
                 self.setUpCollectionView()
             }
         }
         
         leagueDetailsViewModel.fetchAllTeams(for: leagueId){_,_ in
-            
             DispatchQueue.main.async {
                 self.setUpCollectionView()
                 print("Teams \(self.leagueDetailsViewModel.getAllTeams()?.result.count)")
             }
         }
-        
     }
     
     func drawUpcomingEventsSection() -> NSCollectionLayoutSection{

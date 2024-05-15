@@ -5,8 +5,6 @@
 //  Created by JETSMobileLabMini14 on 13/05/2024.
 //
 
-import Alamofire
-
 class LeaguesViewModel {
     private var leagues: [League]?
     private var apiService: ApiService
@@ -24,13 +22,12 @@ class LeaguesViewModel {
             "APIkey": ApiURLs.API_KEY.rawValue
         ]
         
-        AF.request(apiUrl, parameters: parameters).responseDecodable(of: Leagues.self) { response in
-            switch response.result {
-            case .success(let leaguesResponse):
-                self.leagues = leaguesResponse.result
-                completion()
-            case .failure(let error):
+        apiService.makeCallToApi(url: apiUrl, params: parameters) { (leagues: Leagues?, error: Error?) in
+            if let error = error {
                 print("Error: \(error.localizedDescription)")
+            } else {
+                self.leagues = leagues?.result
+                completion()
             }
         }
     }
