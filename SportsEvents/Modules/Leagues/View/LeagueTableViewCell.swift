@@ -29,7 +29,7 @@ class LeagueTableViewCell: UITableViewCell {
         } else {
             ivImage.image = UIImage(named: "league")
         }
-        
+        ivImage.layer.cornerRadius = ivImage.bounds.width/2
         lName.text = league.leagueName
     }
 }
