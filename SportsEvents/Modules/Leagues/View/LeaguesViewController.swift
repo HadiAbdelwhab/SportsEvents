@@ -44,19 +44,27 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     private func getLeagues() {
         startLoading()
-        if(isFavourite) {
-            leagueViewModel.fetchFavoriteLeagues {
+        
+        if isFavourite {
+            leagueViewModel.fetchFavoriteLeagues { [weak self] in
                 DispatchQueue.main.async {
-                    print("get Favourite Successfully to ViewController And Here It is:\(String(describing: self.leagueViewModel.getLeagues()))")
+                    guard let self = self else { return }
+                    
                     self.stopLoading()
-                    self.tvLeagues.reloadData()
+                    if let leagues = self.leagueViewModel.getLeagues(), !leagues.isEmpty {
+                        self.tvLeagues.reloadData()
+                    } else {
+                        self.showNoLeaguesMessage()
+                    }
                 }
             }
         } else {
             if reachability.connection != .unavailable {
                 if let sportTitle = selectedSportTitle {
-                    leagueViewModel.fetchLeagues(for: sportTitle) {
+                    leagueViewModel.fetchLeagues(for: sportTitle) { [weak self] in
                         DispatchQueue.main.async {
+                            guard let self = self else { return }
+                            
                             self.stopLoading()
                             self.tvLeagues.reloadData()
                         }
@@ -67,6 +75,20 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
                 stopLoading()
             }
         }
+    }
+
+    private func showNoLeaguesMessage() {
+        tvLeagues.isHidden = true
+        
+        let imgErrorPhoto = UIImageView(frame: CGRect(x: 50, y: 100, width: view.frame.width - 100, height: 200))
+        imgErrorPhoto.image = UIImage(systemName: "icloud.slash")
+        imgErrorPhoto.tintColor = .darkGray
+        view.addSubview(imgErrorPhoto)
+        
+        let lblMsg = UILabel(frame: CGRect(x: imgErrorPhoto.frame.minX, y: imgErrorPhoto.frame.maxY + 15, width: imgErrorPhoto.frame.width, height: 30))
+        lblMsg.text = "No Favourite Leagues To Display"
+        lblMsg.textAlignment = .center
+        view.addSubview(lblMsg)
     }
 
     func setupActivityIndicator() {
