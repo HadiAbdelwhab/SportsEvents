@@ -103,7 +103,12 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
        
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if reachability.connection != .unavailable {
+            let leagues = leagueViewModel.getLeagues()
             if let leaguesVC = storyboard?.instantiateViewController(withIdentifier: "details") as? LeagueDetailsViewController {
+                let selectedLeague = leagues?[indexPath.row]
+
+                leaguesVC.leagueId = selectedLeague?.leagueKey
+                
                 navigationController?.pushViewController(leaguesVC, animated: true)
             }
         } else {

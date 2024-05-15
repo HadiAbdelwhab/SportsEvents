@@ -11,7 +11,8 @@ class LeagueDetailsViewController: UIViewController {
 
     @IBOutlet var collectionView: UICollectionView!
     var activityIndicator: UIActivityIndicatorView!
-
+    var leagueId:Int?
+    
     
     var leagueDetailsViewModel : LeagueDetailsViewModel!
 
@@ -22,15 +23,15 @@ class LeagueDetailsViewController: UIViewController {
 
         setupViewModel()
         setupActivityIndicator()
-        getLeagueDetails()
+        getLeagueDetails(leagueId: leagueId ?? 0)
        
     }
     
     
-    func getLeagueDetails(){
+    func getLeagueDetails(leagueId:Int){
        
         
-        leagueDetailsViewModel.fetchUpcomingEvents(for: "football", leagueId: 344){
+        leagueDetailsViewModel.fetchUpcomingEvents(for: "football", leagueId: leagueId){
             self.startLoading()
             DispatchQueue.main.async{ [self] in
                 stopLoading()
@@ -40,7 +41,7 @@ class LeagueDetailsViewController: UIViewController {
             
         }
         
-        leagueDetailsViewModel.fetchLatestResults(for: "football", leagueId: 205){
+        leagueDetailsViewModel.fetchLatestResults(for: "football", leagueId: leagueId){
         
             DispatchQueue.main.async {
                 
@@ -48,9 +49,11 @@ class LeagueDetailsViewController: UIViewController {
             }
         }
         
-        leagueDetailsViewModel.fetchAllTeams(for: 205){_,_ in
+        leagueDetailsViewModel.fetchAllTeams(for: leagueId){_,_ in
             
             DispatchQueue.main.async {
+                self.setUpCollectionView()
+                print("Teams \(self.leagueDetailsViewModel.getAllTeams()?.result.count)")
             }
         }
         
@@ -83,6 +86,31 @@ class LeagueDetailsViewController: UIViewController {
     
     
     func drawLatestResultsSection() -> NSCollectionLayoutSection {
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.75), heightDimension: .absolute(200))
+        let item = NSCollectionLayoutItem(layoutSize: itemSize)
+        
+        let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(200))
+        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 32, bottom: 0, trailing: 32)
+        
+        let section = NSCollectionLayoutSection(group: group)
+        
+        section.contentInsets = NSDirectionalEdgeInsets(top: 100, leading: 16, bottom: 16, trailing: 16)
+        
+        section.visibleItemsInvalidationHandler = { (items, offset, environment) in
+            items.forEach { item in
+                let distanceFromCenter = abs((item.frame.midX - offset.x) - environment.container.contentSize.width / 2.0)
+                let minScale: CGFloat = 0.8
+                let maxScale: CGFloat = 1.0
+                let scale = max(maxScale - (distanceFromCenter / environment.container.contentSize.width), minScale)
+                item.transform = CGAffineTransform(scaleX: scale, y: scale)
+            }
+        }
+        
+        return section
+    }
+
+    func drawTeamsSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
@@ -111,8 +139,10 @@ class LeagueDetailsViewController: UIViewController {
         let layout = UICollectionViewCompositionalLayout { index, environment in
             if index == 0 {
                 return self.drawUpcomingEventsSection()
-            } else {
+            } else if index == 1 {
                 return self.drawLatestResultsSection()
+            }else{
+                return self.drawTeamsSection()
             }
         }
         collectionView.setCollectionViewLayout(layout, animated: true)
@@ -156,8 +186,10 @@ extension LeagueDetailsViewController : UICollectionViewDelegate, UICollectionVi
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if section == 0 {
             return leagueDetailsViewModel.getUpcomingEvents()?.result.count ?? 0
-        } else {
+        } else if section == 1{
             return leagueDetailsViewModel.getLatestResults()?.result.count ?? 0
+        }else{
+            return leagueDetailsViewModel.getAllTeams()?.result.count ?? 0
         }
     }
     
@@ -176,7 +208,7 @@ extension LeagueDetailsViewController : UICollectionViewDelegate, UICollectionVi
             cell.configure(homeTeam: item?.event_home_team ?? "home", awayTeam: item!.event_away_team ?? "away", homeLogo: item!.home_team_logo ?? "", awayLogo: item!.away_team_logo ?? "", eventDate: item?.event_date ?? "date")
             
             return cell
-        } else {
+        } else if indexPath.section == 1{
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell2", for: indexPath) as! LatestResultsCollectionViewCell
             
             let item = leagueDetailsViewModel.getLatestResults()?.result[indexPath.row]
@@ -184,11 +216,21 @@ extension LeagueDetailsViewController : UICollectionViewDelegate, UICollectionVi
             cell.configure(homeTeam: item?.event_home_team ?? "home", awayTeam: item!.event_away_team ?? "away", homeLogo: item!.home_team_logo ?? "", awayLogo: item!.away_team_logo ?? "", eventResult: item?.event_final_result ?? "0 - 0", eventDate: item?.event_date ?? "")
             
             return cell
+        }else{
+            
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell3", for: indexPath) as! TeamsCollectionViewCell
+            
+            let item = leagueDetailsViewModel.getAllTeams()?.result[indexPath.row]
+  
+            cell.config(teamTitle: item?.team_name ?? "", teamImage: item?.team_logo ?? "")
+            
+            return cell
+            
         }
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 2
+        return 3
     }
     
 }
