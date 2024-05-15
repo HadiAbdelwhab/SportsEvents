@@ -26,17 +26,27 @@ class SportsLocalDataSource: LocalDataSource {
     }
     
     func fetchFavoriteLeagues(completion: @escaping ([League]) -> Void) {
-        let fetchRequest: NSFetchRequest<FavoriteLeague> = FavoriteLeague.fetchRequest()
+        let fetchRequest: NSFetchRequest<FavoriteLeague> = NSFetchRequest(entityName: "FavoriteLeague")
+        
         do {
             let favoriteLeagues = try viewContext.fetch(fetchRequest)
             
-            let leagues = favoriteLeagues.map { league -> League in
-                return League(leagueKey: Int(league.leagueKey),
-                              leagueName: league.leagueName ?? "",
-                              countryKey: Int(league.countryKey),
-                              countryName: league.countryName ?? "",
-                              leagueLogo: league.leagueLogo,
-                              countryLogo: league.countryLogo)
+            let leagues = favoriteLeagues.compactMap { league -> League? in
+                guard let leagueKeyString = league.value(forKey: "leagueKey") as? String,
+                      let leagueName = league.value(forKey: "leagueName") as? String,
+                      let countryKeyString = league.value(forKey: "countryKey") as? String,
+                      let countryName = league.value(forKey: "countryName") as? String,
+                      let leagueKey = Int(leagueKeyString),
+                      let countryKey = Int(countryKeyString) else {
+                    return nil
+                }
+                
+                return League(leagueKey: leagueKey,
+                              leagueName: leagueName,
+                              countryKey: countryKey,
+                              countryName: countryName,
+                              leagueLogo: league.value(forKey: "leagueLogo") as? String,
+                              countryLogo: league.value(forKey: "countryLogo") as? String)
             }
             completion(leagues)
         } catch {
@@ -60,5 +70,4 @@ class SportsLocalDataSource: LocalDataSource {
             print("Error removing favorite league: \(error)")
         }
     }
-    
 }
