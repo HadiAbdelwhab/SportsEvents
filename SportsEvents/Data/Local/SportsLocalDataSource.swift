@@ -70,4 +70,20 @@ class SportsLocalDataSource: LocalDataSource {
             print("Error removing favorite league: \(error)")
         }
     }
+    
+    func addFavoriteLeagues(league: League) {
+        let favoriteLeague = FavoriteLeague(context: viewContext)
+        favoriteLeague.leagueKey = Int32(league.leagueKey)
+        favoriteLeague.leagueName = league.leagueName
+        favoriteLeague.countryKey = Int32(league.countryKey)
+        favoriteLeague.countryName = league.countryName
+        favoriteLeague.leagueLogo = league.leagueLogo
+        favoriteLeague.countryLogo = league.countryLogo
+        
+        do {
+            try viewContext.save()
+        } catch {
+            print("Error adding favorite league: \(error)")
+        }
+    }
 }
