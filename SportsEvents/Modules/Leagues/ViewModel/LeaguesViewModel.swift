@@ -24,7 +24,7 @@ class LeaguesViewModel {
         
         apiService.makeCallToApi(url: apiUrl, params: parameters) { (leagues: Leagues?, error: Error?) in
             if let error = error {
-                print("Error: \(error.localizedDescription)")
+                print("Error: \(error)")
             } else {
                 self.leagues = leagues?.result
                 completion()

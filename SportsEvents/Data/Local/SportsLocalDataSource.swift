@@ -36,7 +36,8 @@ class SportsLocalDataSource: LocalDataSource {
                               countryKey: Int(league.countryKey),
                               countryName: league.countryName ?? "",
                               leagueLogo: league.leagueLogo,
-                              countryLogo: league.countryLogo)
+                              countryLogo: league.countryLogo,
+                              sportName: league.sportName)
             }
             completion(leagues)
         } catch {
@@ -61,4 +62,24 @@ class SportsLocalDataSource: LocalDataSource {
         }
     }
     
+    
+    func addFavoriteLeague(league: League, sportName:String) {
+        let favoriteLeague = FavoriteLeague(context: viewContext)
+        favoriteLeague.leagueKey = Int32(league.leagueKey)
+        favoriteLeague.leagueName = league.leagueName
+        favoriteLeague.countryKey = Int32(league.countryKey)
+        favoriteLeague.countryName = league.countryName
+        favoriteLeague.leagueLogo = league.leagueLogo
+        favoriteLeague.countryLogo = league.countryLogo
+        favoriteLeague.sportName = sportName
+        
+        do {
+            try viewContext.save()
+        } catch {
+            print("Error adding favorite league: \(error)")
+        }
+    }
+
 }
+
+

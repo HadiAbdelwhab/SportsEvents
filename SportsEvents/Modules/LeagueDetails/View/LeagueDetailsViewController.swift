@@ -12,7 +12,7 @@ class LeagueDetailsViewController: UIViewController {
     @IBOutlet var collectionView: UICollectionView!
     var activityIndicator: UIActivityIndicatorView!
     var leagueId:Int?
-    
+    var selectedSportTitle:String?
     
     var leagueDetailsViewModel : LeagueDetailsViewModel!
 
@@ -23,15 +23,15 @@ class LeagueDetailsViewController: UIViewController {
 
         setupViewModel()
         setupActivityIndicator()
-        getLeagueDetails(leagueId: leagueId ?? 0)
+        getLeagueDetails(leagueId: leagueId ?? 0,selectedSportTitle: selectedSportTitle ?? "")
        
     }
     
     
-    func getLeagueDetails(leagueId:Int){
+    func getLeagueDetails(leagueId:Int, selectedSportTitle:String){
         
         
-        leagueDetailsViewModel.fetchUpcomingEvents(for: "football", leagueId: leagueId){
+        leagueDetailsViewModel.fetchUpcomingEvents(for: selectedSportTitle, leagueId: leagueId){
             self.startLoading()
             DispatchQueue.main.async{ [self] in
                 stopLoading()
@@ -42,7 +42,7 @@ class LeagueDetailsViewController: UIViewController {
         }
         
         
-        leagueDetailsViewModel.fetchLatestResults(for: "football", leagueId: leagueId) {
+        leagueDetailsViewModel.fetchLatestResults(for: selectedSportTitle, leagueId: leagueId) {
             DispatchQueue.main.async {
                 self.setUpCollectionView()
             }
@@ -198,7 +198,6 @@ extension LeagueDetailsViewController : UICollectionViewDelegate, UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
-            // Configure cell for upcoming events section
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! UpComingEventsCollectionViewCell
             
             let item = leagueDetailsViewModel.getUpcomingEvents()?.result[indexPath.row]
