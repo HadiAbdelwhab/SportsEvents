@@ -54,7 +54,7 @@ class LeagueDetailsViewModel {
     
     func fetchLatestResults(for sportTitle: String, leagueId: Int, completion: @escaping () -> Void) {
         let currentDate = Date()
-        let oneYearAgoDate = Calendar.current.date(byAdding: .year, value: -1, to: currentDate)!
+        let oneWeekAgoDate = Calendar.current.date(byAdding: .day, value: -7, to: currentDate)!
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -62,7 +62,7 @@ class LeagueDetailsViewModel {
         let parameters: [String: Any] = [
             "met": "Fixtures",
             "leagueId": leagueId,
-            "from": dateFormatter.string(from: oneYearAgoDate),
+            "from": dateFormatter.string(from: oneWeekAgoDate),
             "to": dateFormatter.string(from: currentDate),
             "APIkey": ApiURLs.API_KEY.rawValue
         ]
@@ -79,10 +79,12 @@ class LeagueDetailsViewModel {
             }
         }
     }
+
     
     func fetchAllTeams(for leagueId: Int, completion: @escaping (TeamResponse?, Error?) -> Void) {
                 let apiUrl = "https://apiv2.allsportsapi.com/football/?&met=Teams&leagueId=\(leagueId)&APIkey=d2538bc4458303020afacfc7511cb9f5808e36e454a61508dcb8a7ade6984775"
                 
+                print(apiUrl)
                 apiService.makeCallToApi(url: apiUrl) { (response: TeamResponse?, error) in
                     if let error = error {
                         completion(nil, error)
