@@ -81,20 +81,22 @@ class LeagueDetailsViewModel {
     }
 
     
-    func fetchAllTeams(for leagueId: Int, completion: @escaping (TeamResponse?, Error?) -> Void) {
-                let apiUrl = "https://apiv2.allsportsapi.com/football/?&met=Teams&leagueId=\(leagueId)&APIkey=d2538bc4458303020afacfc7511cb9f5808e36e454a61508dcb8a7ade6984775"
-                
-                print(apiUrl)
-                apiService.makeCallToApi(url: apiUrl) { (response: TeamResponse?, error) in
-                    if let error = error {
-                        completion(nil, error)
-                        print(error)
-                    } else if let response = response {
-                        self.teamsResponse = response
-                        completion(response, nil)
-                    }
+    func fetchAllTeams(for leagueId: Int, completion: @escaping () -> Void) {
+            let apiUrl = "\(ApiURLs.BASE_URL.rawValue)football/"
+            let parameters: [String: Any] = [
+                "met": "Teams",
+                "leagueId": leagueId,
+                "APIkey": ApiURLs.API_KEY.rawValue
+            ]
+            apiService.makeCallToApi(url: apiUrl, params: parameters) { (response: TeamResponse?, error: Error?) in
+                if let error = error {
+                    print("Error: \(error.localizedDescription)")
+                } else {
+                    self.teamsResponse = response
+                    completion()
                 }
             }
+        }
         
     
     func getUpcomingEvents() -> EventsResponse? {

@@ -48,7 +48,7 @@ class LeagueDetailsViewController: UIViewController {
             }
         }
         
-        leagueDetailsViewModel.fetchAllTeams(for: leagueId){_,_ in
+        leagueDetailsViewModel.fetchAllTeams(for: leagueId){
             DispatchQueue.main.async {
                 self.setUpCollectionView()
                 print("Teams \(self.leagueDetailsViewModel.getAllTeams()?.result.count)")
