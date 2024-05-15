@@ -42,7 +42,7 @@ class LeagueDetailsViewController: UIViewController {
         }
         
         
-        leagueDetailsViewModel.fetchLatestResults(for: "football", leagueId: 205) {
+        leagueDetailsViewModel.fetchLatestResults(for: "football", leagueId: leagueId) {
             DispatchQueue.main.async {
                 self.setUpCollectionView()
             }
@@ -65,7 +65,7 @@ class LeagueDetailsViewController: UIViewController {
         group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32)
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuous
-        section.contentInsets = NSDirectionalEdgeInsets(top: 100, leading: 16, bottom: 16, trailing: 0)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 18, leading: 16, bottom: 16, trailing: 0)
         
         section.visibleItemsInvalidationHandler = { (items, offset, environment) in
             items.forEach { item in
@@ -83,16 +83,16 @@ class LeagueDetailsViewController: UIViewController {
     
     
     func drawLatestResultsSection() -> NSCollectionLayoutSection {
-        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.75), heightDimension: .absolute(200))
+        let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(200))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .absolute(200))
         let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
-        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 32, bottom: 0, trailing: 32)
+        group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 4, bottom: 0, trailing: 4)
         
         let section = NSCollectionLayoutSection(group: group)
         
-        section.contentInsets = NSDirectionalEdgeInsets(top: 100, leading: 16, bottom: 16, trailing: 16)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 18, leading: 16, bottom: 16, trailing: 16)
         
         section.visibleItemsInvalidationHandler = { (items, offset, environment) in
             items.forEach { item in
@@ -117,7 +117,7 @@ class LeagueDetailsViewController: UIViewController {
         
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .continuous
-        section.contentInsets = NSDirectionalEdgeInsets(top: 100, leading: 16, bottom: 16, trailing: 0)
+        section.contentInsets = NSDirectionalEdgeInsets(top: 18, leading: 16, bottom: 16, trailing: 0)
         
         section.visibleItemsInvalidationHandler = { (items, offset, environment) in
             items.forEach { item in
