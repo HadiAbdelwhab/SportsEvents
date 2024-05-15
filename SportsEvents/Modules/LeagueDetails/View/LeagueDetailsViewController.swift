@@ -31,9 +31,9 @@ class LeagueDetailsViewController: UIViewController {
        
         
         leagueDetailsViewModel.fetchUpcomingEvents(for: "football", leagueId: 344){
-            
+            self.startLoading()
             DispatchQueue.main.async{ [self] in
-                
+                stopLoading()
                 setUpCollectionView()
 
             }
@@ -87,7 +87,7 @@ class LeagueDetailsViewController: UIViewController {
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
         
         let groupSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(0.75), heightDimension: .absolute(200))
-        let group = NSCollectionLayoutGroup.horizontal(layoutSize: groupSize, subitems: [item])
+        let group = NSCollectionLayoutGroup.vertical(layoutSize: groupSize, subitems: [item])
         group.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 32)
         
         let section = NSCollectionLayoutSection(group: group)
@@ -157,7 +157,7 @@ extension LeagueDetailsViewController : UICollectionViewDelegate, UICollectionVi
         if section == 0 {
             return leagueDetailsViewModel.getUpcomingEvents()?.result.count ?? 0
         } else {
-            return leagueDetailsViewModel.getLatestResults()?.result.count ?? 0 // Assuming getLatestResults returns an array of latest results
+            return leagueDetailsViewModel.getLatestResults()?.result.count ?? 0
         }
     }
     
@@ -177,7 +177,6 @@ extension LeagueDetailsViewController : UICollectionViewDelegate, UICollectionVi
             
             return cell
         } else {
-            // Configure cell for latest results section
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell2", for: indexPath) as! LatestResultsCollectionViewCell
             
             let item = leagueDetailsViewModel.getLatestResults()?.result[indexPath.row]
