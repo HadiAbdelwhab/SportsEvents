@@ -26,5 +26,4 @@ struct Player: Codable {
     let player_number: String?
     let player_type: String?
     let player_age: String?
-    
 }
