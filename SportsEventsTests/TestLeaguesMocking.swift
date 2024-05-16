@@ -56,4 +56,27 @@ final class TestLeaguesMocking: XCTestCase {
             }
         }
     }
+    
+    func testFetchUpcomingEventsWithError() {
+        mockNetwork.shouldReturnError = true
+        mockNetwork.fetchUpcomingEvents{(response, error) in
+            if error != nil {
+                XCTAssertNotNil(error)
+            } else {
+                XCTFail()
+            }
+        }
+    }
+    
+    func testFetchLatestResultsError() {
+        mockNetwork.shouldReturnError = true
+        mockNetwork.fetchUpcomingEvents{(response, error) in
+            if error != nil {
+                XCTAssertNotNil(error)
+            } else {
+                XCTFail()
+            }
+        }
+    }
+    
 }
