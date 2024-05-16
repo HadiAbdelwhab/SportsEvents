@@ -33,9 +33,7 @@ class LeaguesViewModel {
     }
     
     func fetchFavoriteLeagues(completion: @escaping () -> Void) {
-        print("Start To Get Favourite Leagues")
         databaseManager.fetchFavoriteLeagues { favoriteLeagues in
-            print("get Favourite Successfully to viewModel And Here It is:\(favoriteLeagues.count)")
             self.leagues = favoriteLeagues
             completion()
         }
