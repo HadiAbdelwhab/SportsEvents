@@ -111,6 +111,17 @@ class LeagueDetailsViewModel {
         databaseManager.removeFavoriteLeague(leagueKey: leagueKey)
     }
     
+    func isLeagueFavourite(league: League, completion: @escaping (Bool) -> Void) {
+        databaseManager.fetchFavoriteLeagues { leagues in
+            let isFavorite = leagues.contains { favoriteLeague in
+                return favoriteLeague.leagueKey == league.leagueKey
+            }
+            completion(isFavorite)
+        }
+    }
+
+
+    
     func getUpcomingEvents() -> EventsResponse? {
         return upComingEventsResponse
     }
