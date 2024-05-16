@@ -20,8 +20,7 @@ class TeamViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       // collectionView.register(PlayerCollectionViewCell.self, forCellWithReuseIdentifier: "playerscell")
-        //collectionView.register(TeamCollectionViewCell.self, forCellWithReuseIdentifier: "teamcell")
+        
         setupViewModel()
         setupActivityIndicator()
         setupReachability()

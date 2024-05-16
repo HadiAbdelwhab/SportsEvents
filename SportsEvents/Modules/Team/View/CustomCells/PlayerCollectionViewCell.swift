@@ -17,6 +17,23 @@ class PlayerCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var playerAgeLable: UILabel!
     
     
+    override func awakeFromNib() {
+           super.awakeFromNib()
+           setupViews()
+       }
+
+    
+    func setupViews() {
+            
+            
+            backgroundColor = .white
+            
+            
+            layer.borderWidth = 1
+            layer.borderColor = UIColor.gray.cgColor
+            layer.cornerRadius = 8
+        }
+    
     public func configure(playerImage: String?, playerName: String, playerNumber: String, playerRate: String, playerAge: String) {
         if let imageURLString = playerImage, let imageURL = URL(string: imageURLString) {
             playerImageView.kf.setImage(with: imageURL)
