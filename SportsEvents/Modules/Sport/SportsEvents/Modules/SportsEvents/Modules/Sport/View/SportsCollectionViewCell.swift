@@ -18,7 +18,7 @@ class SportsCollectionViewCell: UICollectionViewCell {
     
     func bind(sport: Sport) {
         ivImage.image = UIImage(named: sport.thumb)
-        ivImage.layer.cornerRadius = ivImage.bounds.width/2
+        ivImage.layer.cornerRadius = ivImage.bounds.width/10
         lName.text = sport.title
     }
 }
