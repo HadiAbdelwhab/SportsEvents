@@ -130,6 +130,7 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
                 let selectedLeague = leagues?[indexPath.row]
                 leaguesVC.selectedSportTitle = selectedSportTitle
                 leaguesVC.leagueId = selectedLeague?.leagueKey
+                leaguesVC.currentLeague = selectedLeague
                 leaguesVC.modalPresentationStyle = .fullScreen
                 present(leaguesVC, animated: true)
             }

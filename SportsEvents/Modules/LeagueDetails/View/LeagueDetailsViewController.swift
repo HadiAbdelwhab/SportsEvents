@@ -13,7 +13,7 @@ class LeagueDetailsViewController: UIViewController {
     var activityIndicator: UIActivityIndicatorView!
     var leagueId:Int?
     var selectedSportTitle:String?
-    
+    var currentLeague:League?
     var leagueDetailsViewModel : LeagueDetailsViewModel!
 
     
@@ -56,6 +56,13 @@ class LeagueDetailsViewController: UIViewController {
         }
     }
     
+    @IBAction func backButton(_ sender: Any) {
+        dismiss(animated: true)
+    }
+    @IBAction func addToFavourite(_ sender: Any) {
+        leagueDetailsViewModel.addLeagueToFavourite(leguea: currentLeague!)
+        
+    }
     func drawUpcomingEventsSection() -> NSCollectionLayoutSection{
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)

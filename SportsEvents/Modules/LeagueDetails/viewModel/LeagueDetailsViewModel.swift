@@ -102,8 +102,9 @@ class LeagueDetailsViewModel {
         }
         
     
-    func addLeagueToFavourite(){
+    func addLeagueToFavourite(leguea : League){
         
+        databaseManager.addFavoriteLeagues(league: leguea)
     }
     
     func getUpcomingEvents() -> EventsResponse? {

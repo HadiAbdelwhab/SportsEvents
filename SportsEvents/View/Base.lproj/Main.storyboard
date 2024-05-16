@@ -136,6 +136,9 @@
                                 <rect key="frame" x="326.33333333333331" y="75" width="50.666666666666686" height="34.333333333333343"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="heart" catalog="system"/>
+                                <connections>
+                                    <action selector="addToFavourite:" destination="0CL-5M-zKt" eventType="touchUpInside" id="Zvi-66-ae6"/>
+                                </connections>
                             </button>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="zcT-xH-9aQ">
                                 <rect key="frame" x="0.0" y="125.33333333333331" width="393" height="692.66666666666674"/>
@@ -320,6 +323,9 @@
                                 <rect key="frame" x="0.0" y="75" width="109" height="39"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="chevron.backward" catalog="system" title=" Leagues"/>
+                                <connections>
+                                    <action selector="backButton:" destination="0CL-5M-zKt" eventType="touchUpInside" id="DBG-v3-NKi"/>
+                                </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="w1t-Ae-Hpr"/>
