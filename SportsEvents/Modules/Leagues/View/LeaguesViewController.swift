@@ -130,8 +130,8 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
                 let selectedLeague = leagues?[indexPath.row]
 
                 leaguesVC.leagueId = selectedLeague?.leagueKey
-                
-                navigationController?.pushViewController(leaguesVC, animated: true)
+                leaguesVC.modalPresentationStyle = .fullScreen
+                present(leaguesVC, animated: true)
             }
         } else {
             showAlert(title: "No Internet Connection", message: "Please check your internet connection and try again.")
