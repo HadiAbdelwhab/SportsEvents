@@ -128,10 +128,11 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
             let leagues = leagueViewModel.getLeagues()
             if let leaguesVC = storyboard?.instantiateViewController(withIdentifier: "details") as? LeagueDetailsViewController {
                 let selectedLeague = leagues?[indexPath.row]
-
+                leaguesVC.selectedSportTitle = selectedSportTitle
                 leaguesVC.leagueId = selectedLeague?.leagueKey
-                
-                navigationController?.pushViewController(leaguesVC, animated: true)
+                leaguesVC.currentLeague = selectedLeague
+                leaguesVC.modalPresentationStyle = .fullScreen
+                present(leaguesVC, animated: true)
             }
         } else {
             showAlert(title: "No Internet Connection", message: "Please check your internet connection and try again.")
