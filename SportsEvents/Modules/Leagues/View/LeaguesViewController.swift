@@ -18,13 +18,16 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     @IBOutlet weak var tvLeagues: UITableView!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
         setupViewModel()
         setupActivityIndicator()
         
         setupReachability()
         getLeagues()
+    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
         let nib = UINib(nibName: "LeagueTableViewCell", bundle: nil)
         tvLeagues.register(nib, forCellReuseIdentifier: "cLeague")
     }
@@ -128,7 +131,11 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
             let leagues = leagueViewModel.getLeagues()
             if let leaguesVC = storyboard?.instantiateViewController(withIdentifier: "details") as? LeagueDetailsViewController {
                 let selectedLeague = leagues?[indexPath.row]
-                leaguesVC.selectedSportTitle = selectedSportTitle
+                if(isFavourite) {
+                    leaguesVC.selectedSportTitle = leagues?[indexPath.row].sportName
+                } else {
+                    leaguesVC.selectedSportTitle = selectedSportTitle
+                }
                 leaguesVC.leagueId = selectedLeague?.leagueKey
                 leaguesVC.currentLeague = selectedLeague
                 leaguesVC.modalPresentationStyle = .fullScreen
@@ -160,6 +167,9 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
                     if let league = self.leagueViewModel.getLeagues()?[indexPath.row] {
                         self.leagueViewModel.removeLeague(league.leagueKey)
                         tableView.deleteRows(at: [indexPath], with: .automatic)
+                        if(self.leagueViewModel.getLeagues()!.isEmpty) {
+                            self.showNoLeaguesMessage()
+                        }
                     }
                 }
                 

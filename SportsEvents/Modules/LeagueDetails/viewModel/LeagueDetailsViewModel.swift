@@ -102,8 +102,7 @@ class LeagueDetailsViewModel {
         }
         
     
-    func addLeagueToFavourite(leguea : League){
-        
+    func addLeagueToFavourite(leguea : League) {
         databaseManager.addFavoriteLeagues(league: leguea)
     }
     
