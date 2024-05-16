@@ -78,7 +78,9 @@ class LeagueDetailsViewController: UIViewController {
         dismiss(animated: true)
     }
     @IBAction func addToFavourite(_ sender: Any) {
-        leagueDetailsViewModel.addLeagueToFavourite(leguea: currentLeague!)
+        
+        
+            leagueDetailsViewModel.addLeagueToFavourite(leguea: currentLeague!)
         
     }
     func drawUpcomingEventsSection() -> NSCollectionLayoutSection{
