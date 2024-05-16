@@ -25,7 +25,7 @@ class LeagueTableViewCell: UITableViewCell {
     
     func bindLeague(league: League) {
         if let logoURL = league.leagueLogo, !logoURL.isEmpty, let url = URL(string: logoURL) {
-            ivImage.kf.setImage(with: url)
+            ivImage.kf.setImage(with: url, placeholder: UIImage(named: "league"))
         } else {
             ivImage.image = UIImage(named: "league")
         }
