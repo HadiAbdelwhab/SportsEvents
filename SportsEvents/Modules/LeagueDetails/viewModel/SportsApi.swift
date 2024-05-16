@@ -6,29 +6,19 @@
 //
 
 import Foundation
-
+import Alamofire
 
 class SportsApi : ApiService {
-    private static let instance = SportsApi()
-
-    static func getApi() -> ApiService {
-        return instance
-    }
+    static let api = SportsApi()
     
-    func makeCallToApi<T: Decodable>(url: String, completion: @escaping (T?, Error?) -> Void) {
-        URLSession.shared.dataTask(with: URL(string: url)!) { data, response, error in
-            guard let data = data, error == nil else {
-                completion(nil, error)
-                return
-            }
-
-            do {
-                print("data\(data)")
-                let decodedData = try JSONDecoder().decode(T.self, from: data)
+    func makeCallToApi<T: Decodable>(url: String, params: [String: Any], completion: @escaping (T?, Error?) -> Void) {
+        AF.request(url, parameters: params).responseDecodable(of: T.self) { response in
+            switch response.result {
+            case .success(let decodedData):
                 completion(decodedData, nil)
-            } catch {
+            case .failure(let error):
                 completion(nil, error)
             }
-        }.resume()
+        }
     }
 }

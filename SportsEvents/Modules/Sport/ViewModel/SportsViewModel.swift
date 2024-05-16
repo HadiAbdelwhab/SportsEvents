@@ -8,7 +8,6 @@
 import Foundation
 
 class SportsViewModel {
-    
     var onSportClicked: ((Sport) -> Void)?
     var onSportsFetched: (() -> Void)?
     var dataSource: SportsDataSource

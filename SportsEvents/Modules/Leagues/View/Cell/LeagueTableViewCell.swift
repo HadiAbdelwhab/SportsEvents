@@ -6,7 +6,7 @@
 //
 
 import UIKit
-
+import Kingfisher
 class LeagueTableViewCell: UITableViewCell {
 
     @IBOutlet weak var ivImage: UIImageView!
@@ -24,8 +24,14 @@ class LeagueTableViewCell: UITableViewCell {
     }
     
     func bindLeague(league: League) {
-        //use league.leagueLogo to display League Icon in ivImage.image
-        ivImage.image = UIImage(named: "tennis")
+        if let logoURL = league.leagueLogo, !logoURL.isEmpty, let url = URL(string: logoURL) {
+            ivImage.kf.setImage(with: url, placeholder: UIImage(named: "league"))
+        } else {
+            ivImage.image = UIImage(named: "league")
+        }
+        ivImage.layer.cornerRadius = ivImage.bounds.width/2
+        ivImage.layer.borderWidth = 2.0
+        ivImage.layer.borderColor = UIColor.black.cgColor
         lName.text = league.leagueName
     }
 }

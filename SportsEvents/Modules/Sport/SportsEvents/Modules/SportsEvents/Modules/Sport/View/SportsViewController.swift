@@ -6,15 +6,19 @@
 //
 
 import UIKit
+import Reachability
 
-class SportsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class SportsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     var viewModel = SportsViewModel()
+    var reachability: Reachability!
     
     @IBOutlet weak var cvSports: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        setupReachability()
         
         viewModel.fetchSports()
         
@@ -29,13 +33,22 @@ class SportsViewController: UIViewController, UICollectionViewDelegate, UICollec
         cvSports.register(nib, forCellWithReuseIdentifier: "cSport")
     }
     
+    func setupReachability() {
+        do {
+            reachability = try Reachability()
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start reachability notifier")
+        }
+    }
+    
     func updateCollectionView() {
         cvSports.reloadData()
     }
     
     func handleSportClicked(for sport: Sport) {
+        
         if let leaguesVC = storyboard?.instantiateViewController(withIdentifier: "LeaguesViewController") as? LeaguesViewController {
-            print(sport.title)
             leaguesVC.selectedSportTitle = sport.title
             leaguesVC.isFavourite = false
             navigationController?.pushViewController(leaguesVC, animated: true)
@@ -56,10 +69,24 @@ class SportsViewController: UIViewController, UICollectionViewDelegate, UICollec
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        guard reachability.connection != .unavailable else {
+            showAlert(title: "No Internet Connection", message: "Please check your internet connection and try again.")
+            return
+        }
         let sport = viewModel.dataSource.getSports()[indexPath.row]
         viewModel.handleSportClicked(for: sport)
     }
     
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let size = (collectionView.frame.size.width-10)/2
+        return CGSize(width: size, height: 325)
+    }
     
 }
 

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Reachability
 
 class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     var selectedSportTitle: String?
@@ -13,14 +14,20 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
     
     var leagueViewModel : LeaguesViewModel!
     var activityIndicator: UIActivityIndicatorView!
+    var reachability: Reachability!
 
     @IBOutlet weak var tvLeagues: UITableView!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
         setupViewModel()
         setupActivityIndicator()
+        
+        setupReachability()
         getLeagues()
+    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
         let nib = UINib(nibName: "LeagueTableViewCell", bundle: nil)
         tvLeagues.register(nib, forCellReuseIdentifier: "cLeague")
     }
@@ -29,26 +36,76 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
         leagueViewModel = SportsDependencyProvider.provideLeaguesViewModel()
     }
     
+    func setupReachability() {
+        do {
+            reachability = try Reachability()
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start reachability notifier")
+        }
+    }
+    
     private func getLeagues() {
         startLoading()
-        if(isFavourite) {
-            leagueViewModel.fetchFavoriteLeagues {
+        
+        if isFavourite {
+            leagueViewModel.fetchFavoriteLeagues { [weak self] in
                 DispatchQueue.main.async {
-                    print("get Favourite Successfully to ViewController And Here It is:\(String(describing: self.leagueViewModel.getLeagues()))")
+                    guard let self = self else { return }
+                    
                     self.stopLoading()
-                    self.tvLeagues.reloadData()
-                }
-            }
-        } else {
-            if let sportTitle = selectedSportTitle {
-                leagueViewModel.fetchLeagues(for: sportTitle) {
-                    DispatchQueue.main.async {
-                        self.stopLoading()
+                    if let leagues = self.leagueViewModel.getLeagues(), !leagues.isEmpty {
                         self.tvLeagues.reloadData()
+                    } else {
+                        self.showNoLeaguesMessage()
                     }
                 }
             }
+        } else {
+            if reachability.connection != .unavailable {
+                if let sportTitle = selectedSportTitle {
+                    leagueViewModel.fetchLeagues(for: sportTitle) { [weak self] in
+                        DispatchQueue.main.async {
+                            guard let self = self else { return }
+                            
+                            self.stopLoading()
+                            self.tvLeagues.reloadData()
+                        }
+                    }
+                }
+            } else {
+                showAlert(title: "No Internet Connection", message: "Please check your internet connection and try again.")
+                stopLoading()
+            }
         }
+    }
+
+    private func showNoLeaguesMessage() {
+        tvLeagues.isHidden = true
+        
+        let imgErrorPhoto = UIImageView(frame: CGRect(x: 50, y: 200, width: view.frame.width - 100, height: 200))
+        imgErrorPhoto.image = UIImage(systemName: "icloud.slash")
+        imgErrorPhoto.tintColor = .darkGray
+        view.addSubview(imgErrorPhoto)
+        
+        let lblMsg = UILabel(frame: CGRect(x: imgErrorPhoto.frame.minX, y: imgErrorPhoto.frame.maxY + 15, width: imgErrorPhoto.frame.width, height: 30))
+        lblMsg.text = "No Favourite Leagues To Display"
+        lblMsg.textAlignment = .center
+        view.addSubview(lblMsg)
+    }
+    
+    private func showNoInternetConnection() {
+        tvLeagues.isHidden = true
+        
+        let imgErrorPhoto = UIImageView(frame: CGRect(x: 50, y: 200, width: view.frame.width - 100, height: 200))
+        imgErrorPhoto.image = UIImage(systemName: "icloud.slash")
+        imgErrorPhoto.tintColor = .darkGray
+        view.addSubview(imgErrorPhoto)
+        
+        let lblMsg = UILabel(frame: CGRect(x: imgErrorPhoto.frame.minX, y: imgErrorPhoto.frame.maxY + 15, width: imgErrorPhoto.frame.width, height: 30))
+        lblMsg.text = "No Internet Connection"
+        lblMsg.textAlignment = .center
+        view.addSubview(lblMsg)
     }
 
     func setupActivityIndicator() {
@@ -82,35 +139,60 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 100
     }
+       
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        if reachability.connection != .unavailable {
+            let leagues = leagueViewModel.getLeagues()
+            if let leaguesVC = storyboard?.instantiateViewController(withIdentifier: "details") as? LeagueDetailsViewController {
+                let selectedLeague = leagues?[indexPath.row]
+                if(isFavourite) {
+                    leaguesVC.selectedSportTitle = leagues?[indexPath.row].sportName
+                } else {
+                    leaguesVC.selectedSportTitle = selectedSportTitle
+                }
+                leaguesVC.leagueId = selectedLeague?.leagueKey
+                leaguesVC.currentLeague = selectedLeague
+                leaguesVC.modalPresentationStyle = .fullScreen
+                present(leaguesVC, animated: true)
+            }
+        } else {
+            showAlert(title: "No Internet Connection", message: "Please check your internet connection and try again.")
+            self.showNoInternetConnection()
+        }
+    }
     
-//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-////        if let leaguesVC = storyboard?.instantiateViewController(withIdentifier: "details") as? LeagueDetails_ViewController {
-////           
-////            navigationController?.pushViewController(leaguesVC, animated: true)
-////        }
-//    }
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
     
     func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return isFavourite
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if isFavourite {
-            let alertController = UIAlertController(title: "Remove League", message: "Are you sure you want to remove this league?", preferredStyle: .alert)
-            
-            let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
-            
-            let removeAction = UIAlertAction(title: "Remove", style: .destructive) { _ in
-                if let league = self.leagueViewModel.getLeagues()?[indexPath.row] {
-                    self.leagueViewModel.removeLeague(league.leagueKey)
-                    tableView.deleteRows(at: [indexPath], with: .automatic)
+            if editingStyle == .delete {
+                let alertController = UIAlertController(title: "Remove League", message: "Are you sure you want to remove this league?", preferredStyle: .alert)
+                
+                let cancelAction = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
+                
+                let removeAction = UIAlertAction(title: "Remove", style: .destructive) { _ in
+                    if let league = self.leagueViewModel.getLeagues()?[indexPath.row] {
+                        self.leagueViewModel.removeLeague(league.leagueKey)
+                        tableView.deleteRows(at: [indexPath], with: .automatic)
+                        if(self.leagueViewModel.getLeagues()!.isEmpty) {
+                            self.showNoLeaguesMessage()
+                        }
+                    }
                 }
+                
+                alertController.addAction(cancelAction)
+                alertController.addAction(removeAction)
+                
+                present(alertController, animated: true, completion: nil)
             }
-            
-            alertController.addAction(cancelAction)
-            alertController.addAction(removeAction)
-            
-            present(alertController, animated: true, completion: nil)
         }
     }
 }
