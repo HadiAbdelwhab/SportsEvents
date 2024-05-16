@@ -17,8 +17,6 @@ class SportsLocalDataSource: LocalDataSource {
         appDelegate.persistentContainer.viewContext
     }
     
-    
-    
     func fetchFavoriteLeagues(completion: @escaping ([League]) -> Void) {
         let fetchRequest: NSFetchRequest<NSManagedObject> = NSFetchRequest(entityName: "FLeague")
         var leagues: [League] = []
