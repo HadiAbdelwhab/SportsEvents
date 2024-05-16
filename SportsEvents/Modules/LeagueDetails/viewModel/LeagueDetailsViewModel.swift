@@ -22,6 +22,8 @@ class LeagueDetailsViewModel {
         self.databaseManager = databaseManager
     }
     
+    
+    
     func fetchUpcomingEvents(for sportTitle: String, leagueId: Int, completion: @escaping () -> Void) {
         let currentDate = Date()
         let calendar = Calendar.current
@@ -111,10 +113,10 @@ class LeagueDetailsViewModel {
         databaseManager.removeFavoriteLeague(leagueKey: leagueKey)
     }
     
-    func isLeagueFavourite(league: League, completion: @escaping (Bool) -> Void) {
+    func isLeagueFavourite(leagueKey: Int, completion: @escaping (Bool) -> Void) {
         databaseManager.fetchFavoriteLeagues { leagues in
             let isFavorite = leagues.contains { favoriteLeague in
-                return favoriteLeague.leagueKey == league.leagueKey
+                return favoriteLeague.leagueKey == leagueKey
             }
             completion(isFavorite)
         }

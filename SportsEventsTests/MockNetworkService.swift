@@ -65,28 +65,6 @@ class MockNetworkService {
                 ]
             ]
         ]
-    
-    let leaguesData: [String: Any] = [
-        "success": 1,
-        "result": [
-            [
-                "league_key": 1,
-                "league_name": "Premier League",
-                "country_key": 1,
-                "country_name": "England",
-                "league_logo": "premier_league_logo.png",
-                "country_logo": "england_logo.png"
-            ],
-            [
-                "league_key": 2,
-                "league_name": "La Liga",
-                "country_key": 2,
-                "country_name": "Spain",
-                "league_logo": "la_liga_logo.png",
-                "country_logo": "spain_logo.png"
-            ]
-        ]
-    ]
 }
 
 extension MockNetworkService {
@@ -132,10 +110,10 @@ extension MockNetworkService {
     }
     
     func fetchUpcomingEvents(completion: @escaping (EventsResponse?, Error?) -> Void) {
-        var result: TeamResponse?
+        var result: EventsResponse?
         do {
             let data = try JSONSerialization.data(withJSONObject: leaguesData)
-            result = try JSONDecoder().decode(TeamResponse.self, from: data)
+            result = try JSONDecoder().decode(EventsResponse.self, from: data)
         } catch let error {
             print(error)
         }
@@ -152,10 +130,10 @@ extension MockNetworkService {
     }
     
     func fetchLatestResults(completion: @escaping (EventsResponse?, Error?) -> Void) {
-        var result: TeamResponse?
+        var result: EventsResponse?
         do {
             let data = try JSONSerialization.data(withJSONObject: leaguesData)
-            result = try JSONDecoder().decode(TeamResponse.self, from: data)
+            result = try JSONDecoder().decode(EventsResponse.self, from: data)
         } catch let error {
             print(error)
         }

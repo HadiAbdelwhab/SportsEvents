@@ -95,21 +95,20 @@ final class SportsEventsTests: XCTestCase {
         
         let parameters: [String: Any] = [
             "met": "Fixtures",
-            "leagueId": leagueId,
+            "leagueId": 5,
             "from": dateFormatter.string(from: fromDate),
             "to": dateFormatter.string(from: toDate),
             "APIkey": ApiURLs.API_KEY.rawValue
         ]
         
-        let apiUrl = "\(ApiURLs.BASE_URL.rawValue)\(sportTitle.lowercased())/"
+        let apiUrl = "\(ApiURLs.BASE_URL.rawValue)football/"
         print(apiUrl)
         sportsApi.makeCallToApi(url: apiUrl, params: parameters){ (response: EventsResponse?, error:
                                                                     Error?) in
             if let error = error {
-                print("Error: \(error)")
+                XCTFail()
             } else {
-                XCTAssertNotNil(response, "Response should not be nil")
-                completion()
+                XCTAssertNotNil(response)
             }
             
         }
@@ -134,24 +133,21 @@ final class SportsEventsTests: XCTestCase {
         
         let parameters: [String: Any] = [
             "met": "Fixtures",
-            "leagueId": leagueId,
+            "leagueId": 5,
             "from": dateFormatter.string(from: fromDate),
             "to": dateFormatter.string(from: toDate),
             "APIkey": ApiURLs.API_KEY.rawValue
         ]
         
-        let apiUrl = "\(ApiURLs.BASE_URL.rawValue)\(sportTitle.lowercased())/"
+        let apiUrl = "\(ApiURLs.BASE_URL.rawValue)football/"
         print(apiUrl)
         sportsApi.makeCallToApi(url: apiUrl, params: parameters){ (response: EventsResponse?, error:
                                                                     Error?) in
             if let error = error {
-                print("Error: \(error)")
+                XCTFail()
             } else {
-                XCTAssertNotNil(response, "Response should not be nil")
-                completion()
+                XCTAssertNotNil(response)
             }
-           
-            
         }
         wait(for: [expectation], timeout: 10.0)
     }

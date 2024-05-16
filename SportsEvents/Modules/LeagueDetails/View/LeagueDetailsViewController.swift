@@ -3,13 +3,14 @@
 //  SportsEvents
 //
 //  Created by JETSMobileLabMini13 on 13/05/2024.
-//
+//,
 
 import UIKit
 import Reachability
 
 class LeagueDetailsViewController: UIViewController {
 
+    @IBOutlet weak var btnFavourite: UIButton!
     @IBOutlet var collectionView: UICollectionView!
     var activityIndicator: UIActivityIndicatorView!
     var leagueId:Int?
@@ -17,17 +18,26 @@ class LeagueDetailsViewController: UIViewController {
     var currentLeague:League?
     var leagueDetailsViewModel : LeagueDetailsViewModel!
     var reachability: Reachability!
-    
+    var isFavourite: Bool!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupViewModel()
+        
+        leagueDetailsViewModel.isLeagueFavourite(leagueKey: leagueId ?? 0) { isFavourite in
+            self.isFavourite = isFavourite
+            if isFavourite {
+                    self.navigationItem.rightBarButtonItem?.image = UIImage(named: "star.fill")
+                } else {
+                    self.navigationItem.rightBarButtonItem?.image = UIImage(named: "star")
+                }
+        }
+        
         setupActivityIndicator()
         getLeagueDetails(leagueId: leagueId ?? 0,selectedSportTitle: selectedSportTitle ?? "")
         setupReachability()
     }
-    
     
     func setupReachability() {
         do {
@@ -62,7 +72,6 @@ class LeagueDetailsViewController: UIViewController {
         dispatchGroup.enter()
         leagueDetailsViewModel.fetchAllTeams(for: leagueId) {
             DispatchQueue.main.async {
-                
                 print("Teams \(self.leagueDetailsViewModel.getAllTeams()?.result.count)")
                 dispatchGroup.leave()
             }
@@ -77,10 +86,22 @@ class LeagueDetailsViewController: UIViewController {
     @IBAction func backButton(_ sender: Any) {
         dismiss(animated: true)
     }
+    
     @IBAction func addToFavourite(_ sender: Any) {
         currentLeague?.sportName = selectedSportTitle
-        leagueDetailsViewModel.addLeagueToFavourite(leguea: currentLeague!)
+            if let currentLeague = currentLeague {
+                if isFavourite {
+                    leagueDetailsViewModel.deleteLeagueFromFavourite(leagueKey: currentLeague.leagueKey)
+                    isFavourite = false
+                    navigationItem.rightBarButtonItem?.image = UIImage(named: "star")
+                } else {
+                    leagueDetailsViewModel.addLeagueToFavourite(leguea: currentLeague)
+                    isFavourite = true
+                    navigationItem.rightBarButtonItem?.image = UIImage(named: "star.fill")
+                }
+            }
     }
+    
     func drawUpcomingEventsSection() -> NSCollectionLayoutSection{
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
@@ -233,12 +254,25 @@ extension LeagueDetailsViewController : UICollectionViewDelegate, UICollectionVi
                 
                 present(teamViewController!,animated: true)
             }
-            
-            }else {
+        } else {
             showAlert(title: "No Internet Connection", message: "Please check your internet connection and try again.")
+            self.showNoInternetConnection()
         }
     }
     
+    private func showNoInternetConnection() {
+        collectionView.isHidden = true
+        
+        let imgErrorPhoto = UIImageView(frame: CGRect(x: 50, y: 200, width: view.frame.width - 100, height: 200))
+        imgErrorPhoto.image = UIImage(systemName: "icloud.slash")
+        imgErrorPhoto.tintColor = .darkGray
+        view.addSubview(imgErrorPhoto)
+        
+        let lblMsg = UILabel(frame: CGRect(x: imgErrorPhoto.frame.minX, y: imgErrorPhoto.frame.maxY + 15, width: imgErrorPhoto.frame.width, height: 30))
+        lblMsg.text = "No Internet Connection"
+        lblMsg.textAlignment = .center
+        view.addSubview(lblMsg)
+    }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {

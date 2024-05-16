@@ -178,7 +178,7 @@ extension TeamViewController : UICollectionViewDelegate, UICollectionViewDataSou
             
             let item = teamsViewModel.getTeams()![0]
             print("Team name \(item.team_name)")
-            cell.config(teamLogo: item.team_logo, teamName: item.team_name, teamCoach: "Coach", teamCaptain: "Captain")
+            cell.config(teamLogo: item.team_logo, teamName: item.team_name)
            
             return cell
         }else{

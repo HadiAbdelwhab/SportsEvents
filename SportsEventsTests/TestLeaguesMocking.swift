@@ -78,5 +78,4 @@ final class TestLeaguesMocking: XCTestCase {
             }
         }
     }
-    
 }
