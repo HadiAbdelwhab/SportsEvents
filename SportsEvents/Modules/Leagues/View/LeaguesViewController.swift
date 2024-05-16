@@ -18,13 +18,16 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     @IBOutlet weak var tvLeagues: UITableView!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillAppear(_ animated: Bool) {
         setupViewModel()
         setupActivityIndicator()
         
         setupReachability()
         getLeagues()
+    }
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
         let nib = UINib(nibName: "LeagueTableViewCell", bundle: nil)
         tvLeagues.register(nib, forCellReuseIdentifier: "cLeague")
     }
@@ -80,13 +83,27 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
     private func showNoLeaguesMessage() {
         tvLeagues.isHidden = true
         
-        let imgErrorPhoto = UIImageView(frame: CGRect(x: 50, y: 100, width: view.frame.width - 100, height: 200))
+        let imgErrorPhoto = UIImageView(frame: CGRect(x: 50, y: 200, width: view.frame.width - 100, height: 200))
         imgErrorPhoto.image = UIImage(systemName: "icloud.slash")
         imgErrorPhoto.tintColor = .darkGray
         view.addSubview(imgErrorPhoto)
         
         let lblMsg = UILabel(frame: CGRect(x: imgErrorPhoto.frame.minX, y: imgErrorPhoto.frame.maxY + 15, width: imgErrorPhoto.frame.width, height: 30))
         lblMsg.text = "No Favourite Leagues To Display"
+        lblMsg.textAlignment = .center
+        view.addSubview(lblMsg)
+    }
+    
+    private func showNoInternetConnection() {
+        tvLeagues.isHidden = true
+        
+        let imgErrorPhoto = UIImageView(frame: CGRect(x: 50, y: 200, width: view.frame.width - 100, height: 200))
+        imgErrorPhoto.image = UIImage(systemName: "icloud.slash")
+        imgErrorPhoto.tintColor = .darkGray
+        view.addSubview(imgErrorPhoto)
+        
+        let lblMsg = UILabel(frame: CGRect(x: imgErrorPhoto.frame.minX, y: imgErrorPhoto.frame.maxY + 15, width: imgErrorPhoto.frame.width, height: 30))
+        lblMsg.text = "No Internet Connection"
         lblMsg.textAlignment = .center
         view.addSubview(lblMsg)
     }
@@ -128,7 +145,11 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
             let leagues = leagueViewModel.getLeagues()
             if let leaguesVC = storyboard?.instantiateViewController(withIdentifier: "details") as? LeagueDetailsViewController {
                 let selectedLeague = leagues?[indexPath.row]
-                leaguesVC.selectedSportTitle = selectedSportTitle
+                if(isFavourite) {
+                    leaguesVC.selectedSportTitle = leagues?[indexPath.row].sportName
+                } else {
+                    leaguesVC.selectedSportTitle = selectedSportTitle
+                }
                 leaguesVC.leagueId = selectedLeague?.leagueKey
                 leaguesVC.currentLeague = selectedLeague
                 leaguesVC.modalPresentationStyle = .fullScreen
@@ -136,6 +157,7 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
         } else {
             showAlert(title: "No Internet Connection", message: "Please check your internet connection and try again.")
+            self.showNoInternetConnection()
         }
     }
     
@@ -160,6 +182,9 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
                     if let league = self.leagueViewModel.getLeagues()?[indexPath.row] {
                         self.leagueViewModel.removeLeague(league.leagueKey)
                         tableView.deleteRows(at: [indexPath], with: .automatic)
+                        if(self.leagueViewModel.getLeagues()!.isEmpty) {
+                            self.showNoLeaguesMessage()
+                        }
                     }
                 }
                 

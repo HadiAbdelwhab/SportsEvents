@@ -78,10 +78,8 @@ class LeagueDetailsViewController: UIViewController {
         dismiss(animated: true)
     }
     @IBAction func addToFavourite(_ sender: Any) {
-        
-        
-            leagueDetailsViewModel.addLeagueToFavourite(leguea: currentLeague!)
-        
+        currentLeague?.sportName = selectedSportTitle
+        leagueDetailsViewModel.addLeagueToFavourite(leguea: currentLeague!)
     }
     func drawUpcomingEventsSection() -> NSCollectionLayoutSection{
         let itemSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1), heightDimension: .fractionalHeight(1))

@@ -30,6 +30,8 @@ class LeagueTableViewCell: UITableViewCell {
             ivImage.image = UIImage(named: "league")
         }
         ivImage.layer.cornerRadius = ivImage.bounds.width/2
+        ivImage.layer.borderWidth = 2.0
+        ivImage.layer.borderColor = UIColor.black.cgColor
         lName.text = league.leagueName
     }
 }

@@ -8,7 +8,7 @@
 import UIKit
 import Reachability
 
-class SportsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class SportsViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     var viewModel = SportsViewModel()
     var reachability: Reachability!
@@ -82,5 +82,11 @@ class SportsViewController: UIViewController, UICollectionViewDelegate, UICollec
         alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
         present(alert, animated: true, completion: nil)
     }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let size = (collectionView.frame.size.width-10)/2
+        return CGSize(width: size, height: 325)
+    }
+    
 }
 
