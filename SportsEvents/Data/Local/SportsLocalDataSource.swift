@@ -7,46 +7,38 @@
 
 
 import CoreData
+import UIKit
 
 class SportsLocalDataSource: LocalDataSource {
     static let shared = SportsLocalDataSource()
     
-    lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "ScoreEvents")
-        container.loadPersistentStores(completionHandler: { (_, error) in
-            if let error = error as NSError? {
-                fatalError("Unresolved error \(error), \(error.userInfo)")
-            }
-        })
-        return container
-    }()
+    let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    var viewContext : NSManagedObjectContext {
+        appDelegate.persistentContainer.viewContext
+    }
     
-    var viewContext: NSManagedObjectContext {
-        return persistentContainer.viewContext
+    func convertFromNsManagedObject(object : NSManagedObject) -> League{
+        
+        let leagueKey = object.value(forKey: "leagueKey") as! Int
+        let leagueName = object.value(forKey: "leagueName") as! String
+        let countryKey = object.value(forKey: "countryKey") as! Int
+        let countryName = object.value(forKey: "countryName") as! String
+        let leagueLogo = object.value(forKey: "leagueLogo") as! String
+        let countryLogo = object.value(forKey: "countryLogo") as! String
+        
+        let result = League(leagueKey: leagueKey, leagueName: leagueName, countryKey: countryKey, countryName: countryName, leagueLogo: leagueLogo, countryLogo: countryLogo)
+        
+        return result
     }
     
     func fetchFavoriteLeagues(completion: @escaping ([League]) -> Void) {
-        let fetchRequest: NSFetchRequest<FavoriteLeague> = NSFetchRequest(entityName: "FavoriteLeague")
-        
+        let fetchRequest: NSFetchRequest<NSManagedObject> = NSFetchRequest(entityName: "FLeague")
+        var leagues: [League] = []
         do {
-            let favoriteLeagues = try viewContext.fetch(fetchRequest)
-            
-            let leagues = favoriteLeagues.compactMap { league -> League? in
-                guard let leagueKeyString = league.value(forKey: "leagueKey") as? String,
-                      let leagueName = league.value(forKey: "leagueName") as? String,
-                      let countryKeyString = league.value(forKey: "countryKey") as? String,
-                      let countryName = league.value(forKey: "countryName") as? String,
-                      let leagueKey = Int(leagueKeyString),
-                      let countryKey = Int(countryKeyString) else {
-                    return nil
-                }
-                
-                return League(leagueKey: leagueKey,
-                              leagueName: leagueName,
-                              countryKey: countryKey,
-                              countryName: countryName,
-                              leagueLogo: league.value(forKey: "leagueLogo") as? String,
-                              countryLogo: league.value(forKey: "countryLogo") as? String)
+            let favouriteLeagues = try viewContext.fetch(fetchRequest)
+            print(favouriteLeagues.count)
+            for item in favouriteLeagues {
+                leagues.append(convertFromNsManagedObject(object: item))
             }
             completion(leagues)
         } catch {
@@ -72,12 +64,13 @@ class SportsLocalDataSource: LocalDataSource {
     }
     
     func addFavoriteLeagues(league: League) {
-        guard let entity: NSEntityDescription = NSEntityDescription.entity(forEntityName: "FavoriteLeague", in: viewContext) else {
-            print("Unable to find entity description for Movie")
+        print("Enter Adding")
+        guard let entity: NSEntityDescription = NSEntityDescription.entity(forEntityName: "FLeague", in: viewContext) else {
+            print("Unable to find entity description for League")
             return
         }
         
-        var favoriteLeague: NSManagedObject = NSManagedObject(entity: entity, insertInto: viewContext)
+        let favoriteLeague: NSManagedObject = NSManagedObject(entity: entity, insertInto: viewContext)
         favoriteLeague.setValue(league.countryKey, forKey: "countryKey")
         favoriteLeague.setValue(league.countryLogo, forKey: "countryLogo")
         favoriteLeague.setValue(league.countryName, forKey: "countryName")
@@ -87,6 +80,7 @@ class SportsLocalDataSource: LocalDataSource {
         
         do {
             try viewContext.save()
+            print("Added Successfully\(league.leagueName)") 
         } catch {
             print("Error adding favorite league: \(error)")
         }
