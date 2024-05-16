@@ -6,6 +6,7 @@
 //
 
 import Foundation
+
 struct League: Codable {
     let leagueKey: Int
     let leagueName: String

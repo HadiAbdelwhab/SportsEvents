@@ -12,7 +12,7 @@ class SportsLocalDataSource: LocalDataSource {
     static let shared = SportsLocalDataSource()
     
     lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "ScoreZone")
+        let container = NSPersistentContainer(name: "ScoreEvents")
         container.loadPersistentStores(completionHandler: { (_, error) in
             if let error = error as NSError? {
                 fatalError("Unresolved error \(error), \(error.userInfo)")
@@ -72,13 +72,18 @@ class SportsLocalDataSource: LocalDataSource {
     }
     
     func addFavoriteLeagues(league: League) {
-        let favoriteLeague = FavoriteLeague(context: viewContext)
-        favoriteLeague.leagueKey = Int32(league.leagueKey)
-        favoriteLeague.leagueName = league.leagueName
-        favoriteLeague.countryKey = Int32(league.countryKey)
-        favoriteLeague.countryName = league.countryName
-        favoriteLeague.leagueLogo = league.leagueLogo
-        favoriteLeague.countryLogo = league.countryLogo
+        guard let entity: NSEntityDescription = NSEntityDescription.entity(forEntityName: "FavoriteLeague", in: viewContext) else {
+            print("Unable to find entity description for Movie")
+            return
+        }
+        
+        var favoriteLeague: NSManagedObject = NSManagedObject(entity: entity, insertInto: viewContext)
+        favoriteLeague.setValue(league.countryKey, forKey: "countryKey")
+        favoriteLeague.setValue(league.countryLogo, forKey: "countryLogo")
+        favoriteLeague.setValue(league.countryName, forKey: "countryName")
+        favoriteLeague.setValue(league.leagueKey, forKey: "leagueKey")
+        favoriteLeague.setValue(league.leagueLogo, forKey: "leagueLogo")
+        favoriteLeague.setValue(league.leagueName, forKey: "leagueName")
         
         do {
             try viewContext.save()
