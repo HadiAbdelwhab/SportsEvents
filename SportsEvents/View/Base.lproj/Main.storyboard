@@ -3,6 +3,7 @@
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="collection view cell content view" minToolsVersion="11.0"/>
@@ -127,14 +128,13 @@
         <!--Team View Controller-->
         <scene sceneID="y1e-SA-qtq">
             <objects>
-                <viewController id="yhn-RY-5bK" customClass="TeamViewController" customModule="SportsEvents" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="team" id="yhn-RY-5bK" customClass="TeamViewController" customModule="SportsEvents" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="SHe-np-4uD">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FOV-Nd-Qb4">
                                 <rect key="frame" x="0.0" y="59" width="393" height="759"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="pdY-Hc-POZ">
                                     <size key="itemSize" width="388" height="219"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -142,7 +142,7 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="2Nx-4t-ohS" customClass="TeamCollectionViewCell" customModule="SportsEvents" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="teamcell" id="2Nx-4t-ohS" customClass="TeamCollectionViewCell" customModule="SportsEvents" customModuleProvider="target">
                                         <rect key="frame" x="2.6666666666666665" y="0.0" width="388" height="219"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="crc-43-Ihw">
@@ -191,7 +191,7 @@
                                             <outlet property="teamTitle" destination="Eq1-lv-oYq" id="jJM-SW-afq"/>
                                         </connections>
                                     </collectionViewCell>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="iJR-BP-xzZ" customClass="PlayerCollectionViewCell" customModule="SportsEvents" customModuleProvider="target">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="playercell" id="iJR-BP-xzZ" customClass="PlayerCollectionViewCell" customModule="SportsEvents" customModuleProvider="target">
                                         <rect key="frame" x="2.6666666666666665" y="229" width="388" height="90"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="1Lt-bP-qsn" customClass="PlayerCollectionViewCell" customModule="SportsEvents" customModuleProvider="target">
@@ -234,8 +234,11 @@
                                         </collectionViewCellContentView>
                                         <size key="customSize" width="388" height="90"/>
                                         <connections>
-                                            <outlet property="playerNameLable" destination="JUL-1G-ceC" id="TH0-7t-Lqv"/>
-                                            <outlet property="playerNumberLable" destination="HVX-ke-nRi" id="zTZ-fA-WeV"/>
+                                            <outlet property="playerAgeLable" destination="Tq8-MM-0sR" id="No8-Fv-lbX"/>
+                                            <outlet property="playerImageView" destination="TeY-OW-ePr" id="1uw-4x-61i"/>
+                                            <outlet property="playerNameLable" destination="JUL-1G-ceC" id="BWU-ud-up3"/>
+                                            <outlet property="playerNumberLable" destination="HVX-ke-nRi" id="u89-D4-TOb"/>
+                                            <outlet property="playerRateLable" destination="Vhy-TF-yiq" id="gR8-RN-N6t"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -312,6 +315,7 @@
                                                 <constraint firstItem="evL-Sp-NLq" firstAttribute="top" secondItem="MTP-rh-a53" secondAttribute="bottom" constant="8" id="poo-j1-FxV"/>
                                             </constraints>
                                         </collectionViewCellContentView>
+                                        <color key="backgroundColor" name="AccentColor"/>
                                         <connections>
                                             <outlet property="teamImageView" destination="MTP-rh-a53" id="Zzz-GR-UfH"/>
                                             <outlet property="teamTitleLable" destination="evL-Sp-NLq" id="cxf-EF-Xp4"/>
@@ -508,6 +512,9 @@
         <image name="heart" catalog="system" width="128" height="107"/>
         <image name="heart.fill" catalog="system" width="128" height="107"/>
         <image name="sportscourt" catalog="system" width="128" height="83"/>
+        <namedColor name="AccentColor">
+            <color red="0.0" green="0.46000000000000002" blue="0.89000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>

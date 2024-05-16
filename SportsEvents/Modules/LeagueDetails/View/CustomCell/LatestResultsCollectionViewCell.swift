@@ -17,7 +17,22 @@ class LatestResultsCollectionViewCell: UICollectionViewCell {
     @IBOutlet var resultLable:UILabel!
     @IBOutlet var eventDateLable:UILabel!
 
+    override func awakeFromNib() {
+           super.awakeFromNib()
+           setupViews()
+       }
+
     
+    func setupViews() {
+            
+            
+            backgroundColor = .white
+            
+            
+            layer.borderWidth = 1
+            layer.borderColor = UIColor.gray.cgColor
+            layer.cornerRadius = 8
+        }
     public func configure(homeTeam:String, awayTeam:String, homeLogo:String, awayLogo:String, eventResult:String, eventDate:String){
             
             homeTeamLable.text = homeTeam
