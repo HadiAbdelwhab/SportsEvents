@@ -198,7 +198,6 @@ extension LeagueDetailsViewController : UICollectionViewDelegate, UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if indexPath.section == 0 {
-            // Configure cell for upcoming events section
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! UpComingEventsCollectionViewCell
             
             let item = leagueDetailsViewModel.getUpcomingEvents()?.result[indexPath.row]

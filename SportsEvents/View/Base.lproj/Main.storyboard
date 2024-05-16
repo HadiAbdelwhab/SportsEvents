@@ -124,6 +124,140 @@
             </objects>
             <point key="canvasLocation" x="507.63358778625951" y="1469.7183098591549"/>
         </scene>
+        <!--Team View Controller-->
+        <scene sceneID="y1e-SA-qtq">
+            <objects>
+                <viewController id="yhn-RY-5bK" customClass="TeamViewController" customModule="SportsEvents" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="SHe-np-4uD">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="FOV-Nd-Qb4">
+                                <rect key="frame" x="0.0" y="59" width="393" height="759"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <collectionViewFlowLayout key="collectionViewLayout" automaticEstimatedItemSize="YES" minimumLineSpacing="10" minimumInteritemSpacing="10" id="pdY-Hc-POZ">
+                                    <size key="itemSize" width="388" height="219"/>
+                                    <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                                    <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                                    <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                </collectionViewFlowLayout>
+                                <cells>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="2Nx-4t-ohS" customClass="TeamCollectionViewCell" customModule="SportsEvents" customModuleProvider="target">
+                                        <rect key="frame" x="2.6666666666666665" y="0.0" width="388" height="219"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="crc-43-Ihw">
+                                            <rect key="frame" x="0.0" y="0.0" width="388" height="219"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fxY-5G-43p">
+                                                    <rect key="frame" x="8" y="47" width="125" height="125"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="125" id="6I0-EL-5MW"/>
+                                                        <constraint firstAttribute="width" constant="125" id="Ono-cR-gCY"/>
+                                                    </constraints>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Coach" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ngz-67-29Y">
+                                                    <rect key="frame" x="254" y="67" width="49" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Captain" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bIX-IW-aUV">
+                                                    <rect key="frame" x="261" y="150" width="59" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Team" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Eq1-lv-oYq">
+                                                    <rect key="frame" x="50" y="18" width="42" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="fxY-5G-43p" firstAttribute="centerY" secondItem="crc-43-Ihw" secondAttribute="centerY" id="4ex-Hm-hW5"/>
+                                                <constraint firstItem="fxY-5G-43p" firstAttribute="leading" secondItem="crc-43-Ihw" secondAttribute="leading" constant="8" id="BGM-My-VNq"/>
+                                            </constraints>
+                                        </collectionViewCellContentView>
+                                        <size key="customSize" width="388" height="219"/>
+                                        <connections>
+                                            <outlet property="TeamLogoImageView" destination="fxY-5G-43p" id="SpK-ou-xJa"/>
+                                            <outlet property="teamCaptainLable" destination="bIX-IW-aUV" id="Y7u-mQ-slV"/>
+                                            <outlet property="teamCoachLable" destination="Ngz-67-29Y" id="JK0-x9-CTQ"/>
+                                            <outlet property="teamTitle" destination="Eq1-lv-oYq" id="jJM-SW-afq"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="iJR-BP-xzZ" customClass="PlayerCollectionViewCell" customModule="SportsEvents" customModuleProvider="target">
+                                        <rect key="frame" x="2.6666666666666665" y="229" width="388" height="90"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <collectionViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" id="1Lt-bP-qsn" customClass="PlayerCollectionViewCell" customModule="SportsEvents" customModuleProvider="target">
+                                            <rect key="frame" x="0.0" y="0.0" width="388" height="90"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="player name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JUL-1G-ceC">
+                                                    <rect key="frame" x="81" y="21" width="93" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="TeY-OW-ePr">
+                                                    <rect key="frame" x="19" y="21" width="54" height="48"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </imageView>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Vhy-TF-yiq">
+                                                    <rect key="frame" x="107" y="50" width="42" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tq8-MM-0sR">
+                                                    <rect key="frame" x="227" y="50" width="42" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="num" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HVX-ke-nRi">
+                                                    <rect key="frame" x="346" y="48" width="34" height="21"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                        </collectionViewCellContentView>
+                                        <size key="customSize" width="388" height="90"/>
+                                        <connections>
+                                            <outlet property="playerNameLable" destination="JUL-1G-ceC" id="TH0-7t-Lqv"/>
+                                            <outlet property="playerNumberLable" destination="HVX-ke-nRi" id="zTZ-fA-WeV"/>
+                                        </connections>
+                                    </collectionViewCell>
+                                </cells>
+                            </collectionView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="7Gc-Ye-1C5"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="FOV-Nd-Qb4" firstAttribute="leading" secondItem="7Gc-Ye-1C5" secondAttribute="leading" id="5mR-dV-2KD"/>
+                            <constraint firstItem="7Gc-Ye-1C5" firstAttribute="trailing" secondItem="FOV-Nd-Qb4" secondAttribute="trailing" id="8zz-Hb-qQz"/>
+                            <constraint firstItem="7Gc-Ye-1C5" firstAttribute="bottom" secondItem="FOV-Nd-Qb4" secondAttribute="bottom" id="EBI-O7-I3w"/>
+                            <constraint firstItem="FOV-Nd-Qb4" firstAttribute="top" secondItem="7Gc-Ye-1C5" secondAttribute="top" id="sXX-Ob-FgS"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="collectionView" destination="FOV-Nd-Qb4" id="rvj-nL-a3h"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="CrK-Az-UGp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="507.63358778625951" y="2887.323943661972"/>
+        </scene>
         <!--League Details View Controller-->
         <scene sceneID="I0N-hB-VDb">
             <objects>
