@@ -40,45 +40,48 @@ class LeagueDetailsViewModel {
         ]
         
         let apiUrl = "\(ApiURLs.BASE_URL.rawValue)\(sportTitle.lowercased())/"
-        
-        AF.request(apiUrl, parameters: parameters).responseDecodable(of: EventsResponse.self) { response in
-            switch response.result {
-            case .success(let eventsResponse):
-                self.upComingEventsResponse = eventsResponse
+        print(apiUrl)
+        apiService.makeCallToApi(url: apiUrl, params: parameters){ (response: EventsResponse?, error:
+                                                                        Error?) in
+            if let error = error {
+                print("Error: \(error)")
+            } else {
+                self.upComingEventsResponse = response
                 completion()
-            case .failure(let error):
-                print("Error: \(error.localizedDescription)")
             }
+            
         }
+            
+        
+        
     }
     
     func fetchLatestResults(for sportTitle: String, leagueId: Int, completion: @escaping () -> Void) {
-        let currentDate = Date()
-        let oneWeekAgoDate = Calendar.current.date(byAdding: .day, value: -7, to: currentDate)!
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        
-        let parameters: [String: Any] = [
-            "met": "Fixtures",
-            "leagueId": leagueId,
-            "from": dateFormatter.string(from: oneWeekAgoDate),
-            "to": dateFormatter.string(from: currentDate),
-            "APIkey": ApiURLs.API_KEY.rawValue
-        ]
-        
-        let apiUrl = "\(ApiURLs.BASE_URL.rawValue)\(sportTitle.lowercased())/"
-        
-        AF.request(apiUrl, parameters: parameters).responseDecodable(of: EventsResponse.self) { response in
-            switch response.result {
-            case .success(let eventsResponse):
-                self.latestResultsResponse = eventsResponse
-                completion()
-            case .failure(let error):
-                print("Error: \(error.localizedDescription)")
+            let currentDate = Date()
+            let oneYearAgoDate = Calendar.current.date(byAdding: .year, value: -1, to: currentDate)!
+            
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "yyyy-MM-dd"
+            
+            let parameters: [String: Any] = [
+                "met": "Fixtures",
+                "leagueId": leagueId,
+                "from": dateFormatter.string(from: oneYearAgoDate),
+                "to": dateFormatter.string(from: currentDate),
+                "APIkey": ApiURLs.API_KEY.rawValue
+            ]
+            
+            let apiUrl = "\(ApiURLs.BASE_URL.rawValue)\(sportTitle.lowercased())/"
+            print(apiUrl)
+            apiService.makeCallToApi(url: apiUrl, params: parameters) { (response: EventsResponse?, error: Error?) in
+                if let error = error {
+                    print("Error: \(error)")
+                } else {
+                    self.latestResultsResponse = response
+                    completion()
+                }
             }
         }
-    }
 
     
     func fetchAllTeams(for leagueId: Int, completion: @escaping () -> Void) {
@@ -90,7 +93,7 @@ class LeagueDetailsViewModel {
             ]
             apiService.makeCallToApi(url: apiUrl, params: parameters) { (response: TeamResponse?, error: Error?) in
                 if let error = error {
-                    print("Error: \(error.localizedDescription)")
+                    print("Error: \(error)")
                 } else {
                     self.teamsResponse = response
                     completion()
@@ -98,6 +101,10 @@ class LeagueDetailsViewModel {
             }
         }
         
+    
+    func addLeagueToFavourite(){
+        
+    }
     
     func getUpcomingEvents() -> EventsResponse? {
         return upComingEventsResponse

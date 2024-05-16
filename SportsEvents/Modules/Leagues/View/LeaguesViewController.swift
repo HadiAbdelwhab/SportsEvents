@@ -128,7 +128,7 @@ class LeaguesViewController: UIViewController, UITableViewDelegate, UITableViewD
             let leagues = leagueViewModel.getLeagues()
             if let leaguesVC = storyboard?.instantiateViewController(withIdentifier: "details") as? LeagueDetailsViewController {
                 let selectedLeague = leagues?[indexPath.row]
-
+                leaguesVC.selectedSportTitle = selectedSportTitle
                 leaguesVC.leagueId = selectedLeague?.leagueKey
                 leaguesVC.modalPresentationStyle = .fullScreen
                 present(leaguesVC, animated: true)
