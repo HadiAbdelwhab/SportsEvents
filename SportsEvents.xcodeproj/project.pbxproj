@@ -186,8 +186,7 @@
 				C605E8F62BF234310096ABB7 /* ViewModel */,
 				C605E8F52BF234280096ABB7 /* View */,
 			);
-			name = Sport;
-			path = SportsEvents/Modules/Sport;
+			path = Sport;
 			sourceTree = "<group>";
 		};
 		C605E8F52BF234280096ABB7 /* View */ = {
@@ -299,8 +298,8 @@
 				CA7CC4EA2BF22B87005F7ABF /* View */,
 				CA7CC4E92BF22B80005F7ABF /* Data */,
 				CA7CC4E82BF22B79005F7ABF /* Modules */,
-				CA7CC4B12BF226A6005F7ABF /* Assets.xcassets */,
 				CA7CC4B62BF226A6005F7ABF /* Info.plist */,
+				CA7CC4B12BF226A6005F7ABF /* Assets.xcassets */,
 				CA7CC4AE2BF226A4005F7ABF /* SportsEvents.xcdatamodeld */,
 			);
 			path = SportsEvents;
@@ -328,10 +327,10 @@
 		CA7CC4E82BF22B79005F7ABF /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				C605E8F42BF234100096ABB7 /* Sport */,
 				C605E93F2BF26E230096ABB7 /* Team */,
 				C605E9132BF252270096ABB7 /* Leagues */,
 				CA7CC4EE2BF23306005F7ABF /* LeagueDetails */,
-				C605E8F42BF234100096ABB7 /* Sport */,
 			);
 			path = Modules;
 			sourceTree = "<group>";

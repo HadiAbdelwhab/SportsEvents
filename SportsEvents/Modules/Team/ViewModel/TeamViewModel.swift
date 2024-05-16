@@ -11,7 +11,7 @@ class TeamViewModel {
     
     private var apiService: ApiService!
     
-    init(apiService: ApiService = SportsApi.getApi()) {
+    init(apiService: ApiService = SportsApi.api) {
         self.apiService = apiService
     }
     

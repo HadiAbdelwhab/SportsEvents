@@ -17,7 +17,7 @@ class LeagueDetailsViewModel {
     private var apiService: ApiService
     private let databaseManager: LocalDataSource
     
-    init(apiService: ApiService = SportsApi.getApi(), databaseManager: LocalDataSource = SportsLocalDataSource()){
+    init(apiService: ApiService = SportsApi.api, databaseManager: LocalDataSource = SportsLocalDataSource()){
         self.apiService = apiService
         self.databaseManager = databaseManager
     }

@@ -9,6 +9,5 @@ import Foundation
 
 
 protocol ApiService {
-    static func getApi() -> ApiService
     func makeCallToApi<T: Decodable>(url: String, params: [String: Any], completion: @escaping (T?, Error?) -> Void)
 }

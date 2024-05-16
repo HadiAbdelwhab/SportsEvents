@@ -9,11 +9,7 @@ import Foundation
 import Alamofire
 
 class SportsApi : ApiService {
-    private static let instance = SportsApi()
-    
-    static func getApi() -> ApiService {
-        return instance
-    }
+    static let api = SportsApi()
     
     func makeCallToApi<T: Decodable>(url: String, params: [String: Any], completion: @escaping (T?, Error?) -> Void) {
         AF.request(url, parameters: params).responseDecodable(of: T.self) { response in

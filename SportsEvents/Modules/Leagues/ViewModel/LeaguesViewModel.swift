@@ -10,7 +10,7 @@ class LeaguesViewModel {
     private var apiService: ApiService
     private let databaseManager: LocalDataSource
     
-    init(apiService: ApiService = SportsApi.getApi(), databaseManager: LocalDataSource = SportsLocalDataSource()) {
+    init(apiService: ApiService = SportsApi.api, databaseManager: LocalDataSource = SportsLocalDataSource()) {
         self.apiService = apiService
         self.databaseManager = databaseManager
     }
@@ -35,7 +35,7 @@ class LeaguesViewModel {
     func fetchFavoriteLeagues(completion: @escaping () -> Void) {
         print("Start To Get Favourite Leagues")
         databaseManager.fetchFavoriteLeagues { favoriteLeagues in
-            print("get Favourite Successfully to viewModel And Here It is:\(favoriteLeagues)")
+            print("get Favourite Successfully to viewModel And Here It is:\(favoriteLeagues.count)")
             self.leagues = favoriteLeagues
             completion()
         }
