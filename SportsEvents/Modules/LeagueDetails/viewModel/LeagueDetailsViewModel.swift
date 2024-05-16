@@ -26,7 +26,7 @@ class LeagueDetailsViewModel {
         let currentDate = Date()
         let calendar = Calendar.current
         let fromDate = calendar.date(byAdding: .day, value: 0, to: currentDate)!
-        let toDate = calendar.date(byAdding: .day, value: 5, to: currentDate)!
+        let toDate = calendar.date(byAdding: .day, value: 10, to: currentDate)!
         
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
@@ -57,23 +57,23 @@ class LeagueDetailsViewModel {
     }
     
     func fetchLatestResults(for sportTitle: String, leagueId: Int, completion: @escaping () -> Void) {
-            let currentDate = Date()
-            let oneYearAgoDate = Calendar.current.date(byAdding: .year, value: -1, to: currentDate)!
-            
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            
-            let parameters: [String: Any] = [
-                "met": "Fixtures",
-                "leagueId": leagueId,
-                "from": dateFormatter.string(from: oneYearAgoDate),
-                "to": dateFormatter.string(from: currentDate),
-                "APIkey": ApiURLs.API_KEY.rawValue
-            ]
-            
-            let apiUrl = "\(ApiURLs.BASE_URL.rawValue)\(sportTitle.lowercased())/"
-            print(apiUrl)
-            apiService.makeCallToApi(url: apiUrl, params: parameters) { (response: EventsResponse?, error: Error?) in
+        let currentDate = Date()
+        let twelveDaysAgoDate = Calendar.current.date(byAdding: .day, value: -12, to: currentDate)!
+        
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        let parameters: [String: Any] = [
+            "met": "Fixtures",
+            "leagueId": leagueId,
+            "from": dateFormatter.string(from: twelveDaysAgoDate),
+            "to": dateFormatter.string(from: currentDate),
+            "APIkey": ApiURLs.API_KEY.rawValue
+        ]
+        
+        let apiUrl = "\(ApiURLs.BASE_URL.rawValue)\(sportTitle.lowercased())/"
+        print(apiUrl)
+        apiService.makeCallToApi(url: apiUrl, params: parameters) { (response: EventsResponse?, error: Error?) in
                 if let error = error {
                     print("Error: \(error)")
                 } else {
@@ -105,6 +105,11 @@ class LeagueDetailsViewModel {
     func addLeagueToFavourite(leguea : League){
         
         databaseManager.addFavoriteLeagues(league: leguea)
+    }
+    
+    func deleteLeagueFromFavourite(leagueKey:Int){
+        
+        databaseManager.removeFavoriteLeague(leagueKey: leagueKey)
     }
     
     func getUpcomingEvents() -> EventsResponse? {

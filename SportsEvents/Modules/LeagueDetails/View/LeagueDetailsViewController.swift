@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Reachability
 
 class LeagueDetailsViewController: UIViewController {
 
@@ -15,7 +16,7 @@ class LeagueDetailsViewController: UIViewController {
     var selectedSportTitle:String?
     var currentLeague:League?
     var leagueDetailsViewModel : LeagueDetailsViewModel!
-
+    var reachability: Reachability!
     
     
     override func viewDidLoad() {
@@ -24,38 +25,55 @@ class LeagueDetailsViewController: UIViewController {
         setupViewModel()
         setupActivityIndicator()
         getLeagueDetails(leagueId: leagueId ?? 0,selectedSportTitle: selectedSportTitle ?? "")
-       
+        setupReachability()
     }
     
     
-    func getLeagueDetails(leagueId:Int, selectedSportTitle:String){
+    func setupReachability() {
+        do {
+            reachability = try Reachability()
+            try reachability.startNotifier()
+        } catch {
+            print("Unable to start reachability notifier")
+        }
+    }
+    
+    func getLeagueDetails(leagueId: Int, selectedSportTitle: String) {
+        let dispatchGroup = DispatchGroup()
         
-        
-        leagueDetailsViewModel.fetchUpcomingEvents(for: selectedSportTitle, leagueId: leagueId){
+        dispatchGroup.enter()
+        leagueDetailsViewModel.fetchUpcomingEvents(for: selectedSportTitle, leagueId: leagueId) {
             self.startLoading()
-            DispatchQueue.main.async{ [self] in
-                stopLoading()
-                setUpCollectionView()
+            DispatchQueue.main.async { [self] in
                 
+                
+                dispatchGroup.leave()
             }
-            
         }
         
-        
+        dispatchGroup.enter()
         leagueDetailsViewModel.fetchLatestResults(for: selectedSportTitle, leagueId: leagueId) {
             DispatchQueue.main.async {
-                self.setUpCollectionView()
+                
+                dispatchGroup.leave()
             }
         }
         
-        leagueDetailsViewModel.fetchAllTeams(for: leagueId){
+        dispatchGroup.enter()
+        leagueDetailsViewModel.fetchAllTeams(for: leagueId) {
             DispatchQueue.main.async {
-                self.setUpCollectionView()
+                
                 print("Teams \(self.leagueDetailsViewModel.getAllTeams()?.result.count)")
+                dispatchGroup.leave()
             }
         }
+        
+        dispatchGroup.notify(queue: .main) {
+            self.stopLoading()
+            self.setUpCollectionView()
+        }
     }
-    
+
     @IBAction func backButton(_ sender: Any) {
         dismiss(animated: true)
     }
@@ -126,6 +144,8 @@ class LeagueDetailsViewController: UIViewController {
         section.orthogonalScrollingBehavior = .continuous
         section.contentInsets = NSDirectionalEdgeInsets(top: 18, leading: 16, bottom: 16, trailing: 0)
         
+       
+        
         section.visibleItemsInvalidationHandler = { (items, offset, environment) in
             items.forEach { item in
                 let distanceFromCenter = abs((item.frame.midX - offset.x) - environment.container.contentSize.width / 2.0)
@@ -138,7 +158,7 @@ class LeagueDetailsViewController: UIViewController {
         
         return section
     }
-    
+
     func setUpCollectionView() {
         let layout = UICollectionViewCompositionalLayout { index, environment in
             if index == 0 {
@@ -177,7 +197,11 @@ class LeagueDetailsViewController: UIViewController {
             view.isUserInteractionEnabled = true
     }
         
-    
+    func showAlert(title: String, message: String) {
+        let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
+        present(alert, animated: true, completion: nil)
+    }
 }
 
 
@@ -199,7 +223,20 @@ extension LeagueDetailsViewController : UICollectionViewDelegate, UICollectionVi
     
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("Item selected")
+        if reachability.connection != .unavailable {
+            if indexPath.section != 0 && indexPath.section != 1{
+                
+                let teamViewController = storyboard?.instantiateViewController(withIdentifier: "team") as? TeamViewController
+                teamViewController!.selectedSportTitle = self.selectedSportTitle!
+                
+                teamViewController?.selectedTeamId = leagueDetailsViewModel.getAllTeams()?.result[indexPath.row].team_key
+                
+                present(teamViewController!,animated: true)
+            }
+            
+            }else {
+            showAlert(title: "No Internet Connection", message: "Please check your internet connection and try again.")
+        }
     }
     
     
@@ -235,5 +272,8 @@ extension LeagueDetailsViewController : UICollectionViewDelegate, UICollectionVi
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 3
     }
+    
+    
+    
     
 }

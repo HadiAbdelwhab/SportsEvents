@@ -15,13 +15,15 @@ class TeamViewModel {
         self.apiService = apiService
     }
     
-    func fetchTeamDetails(sportTitle: String, teamId: String, completion: @escaping () -> Void) {
+    func fetchTeamDetails(sportTitle: String, teamId: Int, completion: @escaping () -> Void) {
         let apiUrl = "\(ApiURLs.BASE_URL.rawValue)\(sportTitle.lowercased())/"
         let parameters: [String: Any] = [
             "met": "Teams",
             "teamId": teamId,
             "APIkey": ApiURLs.API_KEY.rawValue
         ]
+        print("taem details")
+        print(apiUrl)
         
         apiService.makeCallToApi(url: apiUrl, params: parameters) { (teams: TeamResponse?, error: Error?) in
             if let error = error {
